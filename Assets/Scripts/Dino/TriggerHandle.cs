@@ -6,6 +6,7 @@ public class TriggerHandle : MonoBehaviour
 {
     public Compy compy;
 
+
     private void Start()
     {
         // Si compy no se ha asignado en el inspector, intenta encontrarlo en el objeto padre
