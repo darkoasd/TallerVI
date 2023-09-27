@@ -22,6 +22,7 @@ public class DinosaurioHerbivoro : Dinosaurio
 
     protected override void Update()
     {
+
         base.Update();
 
         if (!isFollowingPlayer && !navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
@@ -63,6 +64,13 @@ public class DinosaurioHerbivoro : Dinosaurio
         {
             // Cambiar el valor de isFollowingPlayer a true
             isFollowingPlayer = true;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("DinosaurioCarnivoro"))
+        {
+            RecibirDaño(daño);
         }
     }
 }

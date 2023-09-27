@@ -37,58 +37,81 @@ public class DinosaurioCarnivoro : Dinosaurio
         timeSinceLastAttack += Time.deltaTime;
 
         Compy[] compysInScene = FindObjectsOfType<Compy>();
-        Transform nearestTarget = GetNearestTarget(compysInScene);
+        Transform nearestCompyTarget = GetNearestTarget(compysInScene);
 
-        if (targets == null || targets.Count == 0 || targets[0] == null)
-        {
-            // Si la lista de objetivos es nula, está vacía o el primer objetivo es nulo, volver a patrullar.
-            SetRandomDestination();
-        }
-        if (nearestTarget != null)
-        {
-            float distanceToTarget = Vector3.Distance(transform.position, nearestTarget.position);
+        // Encuentra el jugador en la escena (ajusta la etiqueta según tu configuración)
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
-            if (distanceToTarget < detectionRange)
+        if (playerObject != null)
+        {
+            Transform playerTransform = playerObject.transform;
+            float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+
+            if (nearestCompyTarget != null)
             {
-                // Calcular la dirección hacia el objetivo
-                Vector3 directionToTarget = nearestTarget.position - transform.position;
-                directionToTarget.Normalize();
+                float distanceToCompy = Vector3.Distance(transform.position, nearestCompyTarget.position);
 
-                // Establecer la posición de destino un poco antes del objetivo
-                Vector3 targetPosition = nearestTarget.position - directionToTarget * stoppingDistance;
-
-                // El objetivo más cercano está dentro del rango de detección, persigue al objetivo.
-                navMeshAgent.SetDestination(targetPosition);
-
-                // Verifica si el objetivo está dentro del rango de ataque y si puedes atacar nuevamente
-                if (!isAttacking && distanceToTarget < detectionRangeAttack)
+                // Si el jugador está más cerca o dentro del rango de detección, persigue al jugador.
+                if (distanceToPlayer <= distanceToCompy && distanceToPlayer < detectionRange)
                 {
-                    // Agrega el objetivo a la lista si no está en ella y no está atacando.
-                    targets.Add(nearestTarget);
+                    Vector3 directionToPlayer = playerTransform.position - transform.position;
+                    directionToPlayer.Normalize();
+                    Vector3 targetPosition = playerTransform.position - directionToPlayer * stoppingDistance;
+                    navMeshAgent.SetDestination(targetPosition);
 
-                    // Inicia el ataque
-                    StartCoroutine(Attack());
+                    if (!isAttacking && distanceToPlayer < detectionRangeAttack)
+                    {
+                        targets.Add(playerTransform);
+                        StartCoroutine(Attack());
+                    }
+
+                    else
+                    {
+                        SetRandomDestination();
+                    }
+
                 }
-                else
+                // Si un compy está más cerca y dentro del rango de detección, persigue al compy.
+                else if (distanceToCompy < detectionRange)
                 {
-                    SetRandomDestination();
+                    Vector3 directionToCompy = nearestCompyTarget.position - transform.position;
+                    directionToCompy.Normalize();
+                    Vector3 targetPosition = nearestCompyTarget.position - directionToCompy * stoppingDistance;
+                    navMeshAgent.SetDestination(targetPosition);
+
+                    if (!isAttacking && distanceToCompy < detectionRangeAttack)
+                    {
+                        targets.Add(nearestCompyTarget);
+                        StartCoroutine(Attack());
+                    }
+                    else
+                    {
+                        SetRandomDestination();
+                    }
                 }
             }
             else
             {
-                // Si el objetivo más cercano está fuera del rango de detección, verifica si está en la lista y, si lo está, quítalo.
-                if (targets.Contains(nearestTarget))
-                {
-                    targets.Remove(nearestTarget);
-                }
+               // Verifica si el objetivo más cercano es un compy y si está en la lista, y, si lo está, quítalo.
+    if (nearestCompyTarget != null && targets.Contains(nearestCompyTarget))
+    {
+        targets.Remove(nearestCompyTarget);
+    }
+    
+    // Verifica si el objetivo más cercano es el jugador y si está en la lista, y, si lo está, quítalo.
+    if (playerObject != null && targets.Contains(playerTransform))
+    {
+        targets.Remove(playerTransform);
+    }
 
-                if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
-                {
-                    // Si el objetivo más cercano está fuera del rango de detección, sigue vagando.
-                    SetRandomDestination();
-                }
+    if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
+    {
+        // Si el objetivo más cercano está fuera del rango de detección, sigue vagando.
+        SetRandomDestination();
+    }
             }
         }
+
     }
     private IEnumerator Attack()
     {
