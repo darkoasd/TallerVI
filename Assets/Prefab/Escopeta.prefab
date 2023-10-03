@@ -924,8 +924,8 @@ MonoBehaviour:
   "da\xF1o": 10
   municion: 4
   municionMaxima: 4
-  municionReserva: 16
-  municionReservaMaxima: 32
+  municionReserva: 20
+  municionReservaMaxima: 40
   bulletHolePrefab: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d,
     type: 3}
   muzzleEffectPrefab: {fileID: 1000010254994808, guid: 9defeac88977c0d448aa4541073ee9e4,

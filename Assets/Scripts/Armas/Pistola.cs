@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Pistola : Arma
 {
-   
+    private void Start()
+    {
+        tipoBala = TipoBala.Pistola;
+    }
 
     protected override void Update()
     {
@@ -22,6 +25,8 @@ public class Pistola : Arma
     // Si quieres modificar el comportamiento del disparo específico de la pistola, puedes hacerlo así:
     protected override void Disparar()
     {
+        base.Disparar();
+        
         // Comprueba si hay munición disponible
         if (municion <= 0)
         {
@@ -30,18 +35,15 @@ public class Pistola : Arma
         }
 
         // Disminuye la munición
-        municion--;
+      
+        // Después de modificar la munición
+
+
+
+
         Debug.Log("Disparando con la pistola, munición restante: " + municion);
-        if (SlotIndex >= 0 && SlotIndex < Inventory.instance.items.Count)
-        {
-            Debug.Log("Llamando a UpdateItemUI con SlotIndex: " + SlotIndex);
-            Inventory.instance.UpdateItemUI(SlotIndex);
-        }
-        else if (SlotIndex >= Inventory.instance.items.Count && SlotIndex < Inventory.instance.items.Count + Inventory.instance.toolbarItems.Count)
-        {
-            Debug.Log("Llamando a UpdateToolbarItemUI con SlotIndex: " + SlotIndex);
-            Inventory.instance.UpdateToolbarItemUI(SlotIndex - Inventory.instance.items.Count);
-        }
+      
+
 
         // Toma el centro de la pantalla
         Vector3 puntoCentralPantalla = new Vector3(Screen.width / 2, Screen.height / 2, 0);
@@ -56,10 +58,12 @@ public class Pistola : Arma
         RaycastHit hit;
         if (Physics.Raycast(rayo, out hit, Mathf.Infinity, layerMask))
         {
+            Debug.Log("Objeto golpeado: " + hit.transform.name);
             if (hit.collider.isTrigger)
             {
                 return; // Si el raycast golpea un collider que es trigger, no hacemos nada
             }
+
 
             // Instanciamos el "Bullet Hole" en el punto de impacto
             GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point, Quaternion.LookRotation(hit.normal));
@@ -78,6 +82,10 @@ public class Pistola : Arma
                     dinosaurio.RecibirDaño(daño);
                 }
             }
+        }
+        else
+        {
+            Debug.Log("No se golpeó ningún objeto");
         }
     }
 

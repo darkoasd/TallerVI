@@ -11,24 +11,31 @@ public class Escopeta : Arma
     public int pelletsPerShot = 8;
     public float spreadAngle = 10f;
 
+
+    private void Start()
+    {
+        
+        tipoBala = TipoBala.Escopeta;
+    }
     protected override void Disparar()
     {
-        // Comprueba si hay munición disponible
+        base.Disparar();
+       
         if (municion <= 0)
         {
             Debug.Log("Sin munición");
             return;
         }
 
-        // Disminuye la munición
-        municion--;
-        Debug.Log("Disparando con la escopeta");
+      
+        Debug.Log("Disparando con la escopeta. SlotIndex: " + SlotIndex);
+     
         // Implementación específica de disparar para la escopeta
         Vector3 puntoCentralPantalla = new Vector3(Screen.width / 2, Screen.height / 2, 0);
 
         int layerMask = 1 << LayerMask.NameToLayer("Interactable");
         layerMask = ~layerMask;
-        Debug.Log("Disparando con la escopeta");
+       
         for (int i = 0; i < numDeBalas; i++)
         {
 
@@ -42,6 +49,7 @@ public class Escopeta : Arma
 
             if (Physics.Raycast(shootPoint.position, direction, out hit, range))
             {
+                Debug.Log("Objeto golpeado: " + hit.transform.name);
                 if (hit.collider.isTrigger)
                 {
                     continue; // Salta a la próxima iteración del bucle
@@ -51,6 +59,10 @@ public class Escopeta : Arma
 
                 GameObject muzzleEffect = Instantiate(muzzleEffectPrefab, shootPoint.position, Quaternion.identity);
                 Destroy(muzzleEffect, 2f);
+            }
+            else
+            {
+                Debug.Log("No se golpeó ningún objeto");
             }
             if (hit.transform.CompareTag("Compy"))
             {
@@ -75,4 +87,5 @@ public class Escopeta : Arma
         base.Update(); // Llama a la lógica de Update de la clase padre
         // Cualquier lógica adicional de Update para la escopeta
     }
+
 }

@@ -1,9 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
+public enum TipoBala
+{
+    Escopeta,
+    Pistola,
+    Rifle,
+    // ... otros tipos de bala ...
+}
 public class Arma : MonoBehaviour
 {
+    public TipoBala tipoBala; // Añadido para identificar el tipo de bala que usa esta arma
+
     public int daño;
     public int municion;
     public int municionMaxima;
@@ -16,23 +25,23 @@ public class Arma : MonoBehaviour
     public float nextTimeToFire = 0f; // Tiempo en el que se podrá disparar nuevamente
     public int SlotIndex { get; set; } = -1;
     public Inventory inventory; // referencia al inventario
-    
+
+    public delegate void OnAmmoChanged(int currentAmmo, int maxAmmo);
+    public event OnAmmoChanged onAmmoChanged;
+
+    private void Start()
+    {
+        municion = municionMaxima;
+    }
 
     protected virtual void Disparar()
     {
-        if (municion > 0)
-        {
-            municion--;
 
-            // Actualiza la UI de la munición en el inventario
-            if (SlotIndex >= 0 && SlotIndex < inventory.items.Count)
-            {
-                inventory.items[SlotIndex].armaAsociada.municion = municion;
-                inventory.UpdateItemUI(SlotIndex);
-            }
-        }
+        municion--;
+        onAmmoChanged?.Invoke(municion, municionReserva);
 
     }
+  
 
     protected virtual void Recargar()
     {
@@ -42,31 +51,30 @@ public class Arma : MonoBehaviour
         municion += municionARecargar;
         municionReserva -= municionARecargar;
 
-        // Actualiza la UI de la munición en el inventario
-        if (SlotIndex >= 0 && SlotIndex < inventory.items.Count)
-        {
-            inventory.items[SlotIndex].armaAsociada.municion = municion;
-            inventory.UpdateItemUI(SlotIndex);
-        }
+        onAmmoChanged?.Invoke(municion, municionReserva);
     }
 
     protected virtual void Update()
     {
+        Debug.Log("Update de Arma ejecutándose");
         if (Input.GetKeyDown(KeyCode.R))
         {
+           
+            Debug.Log("Tecla R presionada");
             Recargar();
         }
 
         if (Input.GetMouseButtonDown(0) && municion > 0 && Time.time >= nextTimeToFire)
         {
+            Debug.Log("Botón del mouse presionado para disparar");
             nextTimeToFire = Time.time + 1f / fireRate; // Configura el siguiente momento para disparar
             Disparar();
         }
     }
-    public void Awake()
-    {
-        inventory = Inventory.instance;
-    }
+    
+   
+  
+
 
 
 }

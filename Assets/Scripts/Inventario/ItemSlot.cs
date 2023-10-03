@@ -7,9 +7,9 @@ using TMPro;
     {
         public Item item; // El ítem que está en este slot.
         public int quantity; // La cantidad de ese ítem, si es apilable.
-        public TMP_Text ammoText;
-        public TMP_Text ammoTextMaximo;
-        public GameObject ammoTextGameObject;
+       
 
+   
+   
 
-    }
+}

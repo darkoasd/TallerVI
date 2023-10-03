@@ -68,19 +68,15 @@ public class Inventory : MonoBehaviour
     }
     void Update()
     {
-      
 
+        Debug.Log("Update de Inventario ejecutándose");
         if (equippedWeapon != null && equippedWeapon.itemType == Item.ItemType.Weapon)
         {
 
             // Aquí tienes un arma equipada, puedes activar y actualizar los textos.
-            if (equippedWeapon != null && equippedWeapon.itemType == Item.ItemType.Weapon)
+            if (equippedWeapon != null && equippedWeapon.itemType == Item.ItemType.Weapon && equippedWeaponSlotIndex != -1)
             {
-                // Aquí tienes un arma equipada, puedes activar y actualizar los textos.
-                if (equippedWeaponSlotIndex != -1)
-                {
-                    UpdateItemUI(equippedWeaponSlotIndex);
-                }
+                UpdateItemUI(equippedWeaponSlotIndex);
             }
             else
             {
@@ -157,19 +153,40 @@ public class Inventory : MonoBehaviour
                     nextFeedTime = Time.time + feedDelay;
                 }
                 break;
+            case Item.ItemType.AmmoEscopeta:
+                
+                AddAmmo(TipoBala.Escopeta, itemToUse.municion );
+                
+                ReduceItemQuantity(index);
+              
+                break;
+            case Item.ItemType.AmmoPistola:
+
+                AddAmmo(TipoBala.Pistola, itemToUse.municion);
+
+                ReduceItemQuantity(index);
+
+                break;
+            case Item.ItemType.AmmoRifle:
+
+                AddAmmo(TipoBala.Rifle, itemToUse.municion);
+
+                ReduceItemQuantity(index);
+
+                break;
+
             // Puedes agregar más casos aquí para otros tipos de ítems si lo deseas.
             default:
+
                 Debug.LogWarning("Ítem no reconocido o no usable.");
                 break;
         }
     }
     public void ReduceItemQuantity(int index)
     {
-       
-        Debug.Log("Cantidad antes de reducir: " + toolbarItemQuantities[index]);
-
         Debug.Log("ReduceItemQuantity llamado con índice: " + index);
 
+        // Verificar que el índice es válido
         if (index < 0 || index >= toolbarItems.Count)
         {
             Debug.LogError("Índice fuera de rango.");
@@ -178,7 +195,10 @@ public class Inventory : MonoBehaviour
 
         Debug.Log("Cantidad antes de reducir: " + toolbarItemQuantities[index]);
 
+        // Reducir la cantidad del ítem
         toolbarItemQuantities[index]--;
+
+        // Verificar si la cantidad es 0 o menos y limpiar el slot si es necesario
         if (toolbarItemQuantities[index] <= 0)
         {
             Debug.Log("Cantidad es 0 o negativa, eliminando ítem del slot.");
@@ -189,6 +209,7 @@ public class Inventory : MonoBehaviour
         Debug.Log("Cantidad después de reducir: " + toolbarItemQuantities[index]);
         Debug.Log("Ítem en el índice después de reducir: " + (toolbarItems[index] == null ? "null" : toolbarItems[index].itemName));
 
+        // Actualizar la UI
         UpdateToolbarItemUI(index);
     }
 
@@ -476,14 +497,14 @@ public class Inventory : MonoBehaviour
 
     public void UpdateItemUI(int index)
     {
+        Debug.Log("Actualizando UI del ítem en el índice: " + index);
         GameObject slotObj = inventorySlots[index];
         if (slotObj == null)
         {
             Debug.LogError("SlotObj es null en el índice: " + index);
             return;
         }
-        Debug.Log("UpdateItemUI called with index: " + index);
-        
+
         ItemSlot slot = slotObj.GetComponent<ItemSlot>();
         Image itemIcon = slotObj.transform.Find("ItemIcon").GetComponent<Image>();
         TextMeshProUGUI itemCountText = slotObj.GetComponentInChildren<TextMeshProUGUI>();
@@ -507,34 +528,22 @@ public class Inventory : MonoBehaviour
                 Arma arma = slot.item.armaAsociada;
                 if (arma != null)
                 {
-                    Debug.Log("Municion en UpdateItemUI: " + arma.municion);
-                    Debug.Log("Arma asociada encontrada: " + arma.name);
-                    if (slot.ammoText != null)
-                    {
-                        slot.ammoText.text = arma.municion.ToString();
-                        slot.ammoTextMaximo.text = arma.municionMaxima.ToString();
-                        slot.ammoText.ForceMeshUpdate();
-                        slot.ammoTextMaximo.ForceMeshUpdate();
-                        slot.ammoTextGameObject.SetActive(true);
-                        Debug.Log("Actualizando texto de munición para arma: " + arma.name);
-                    }
+                    Debug.Log("Arma asociada encontrada. Municion: " + arma.municion + "/" + arma.municionMaxima);
+                    // Actualiza el texto de munición usando el método en ItemSlot
                     
                 }
                 else
                 {
-                    Debug.LogError("slot.ammoText es null en el slot " + slotObj.name);
-                    
                     Debug.LogWarning("El ítem en el slot es de tipo arma, pero no tiene una arma asociada.");
                 }
             }
             else
             {
-                Debug.LogWarning("El ítem en el slot es de tipo arma, pero no tiene una arma asociada.");
+                Debug.LogWarning("El ítem en el slot no es de tipo arma.");
             }
         }
         else
         {
-            Debug.LogWarning("El ítem en el slot no es de tipo arma.");
             itemIcon.sprite = null;
             itemIcon.enabled = false;
 
@@ -543,7 +552,7 @@ public class Inventory : MonoBehaviour
                 itemCountText.text = "";
             }
 
-            slot.ammoTextGameObject.SetActive(false);
+         
             Debug.Log("Slot vacío");
         }
     }
@@ -569,13 +578,25 @@ public class Inventory : MonoBehaviour
 
     public void UpdateToolbarItemUI(int index)
     {
-        Debug.Log("UpdateToolbarItemUI called with index: " + index);
+        Debug.Log("Actualizando UI de la barra de herramientas en el índice: " + index);
+
         GameObject slotObj = toolbarSlots[index];
         ItemSlot slot = slotObj.GetComponent<ItemSlot>();
         Image itemIcon = slotObj.transform.Find("ItemIcon").GetComponent<Image>();
         TextMeshProUGUI itemCountText = slotObj.GetComponentInChildren<TextMeshProUGUI>();
 
-        if (toolbarItems[index] != null)
+        // Si el ítem es null, ocultar su icono/imagen en la UI
+        if (toolbarItems[index] == null)
+        {
+            itemIcon.sprite = null;
+            itemIcon.enabled = false;
+
+            if (itemCountText != null)
+            {
+                itemCountText.text = "";
+            }
+        }
+        else // Si el ítem no es null, mostrar su icono/imagen en la UI
         {
             itemIcon.sprite = toolbarItems[index].itemIcon;
             itemIcon.enabled = true;
@@ -592,33 +613,10 @@ public class Inventory : MonoBehaviour
             if (toolbarItems[index].itemType == Item.ItemType.Weapon)
             {
                 Arma arma = toolbarItems[index].armaAsociada;
-                if (slot.ammoText != null)
-                {
-                    slot.ammoText.text = arma.municion.ToString();
-                    slot.ammoTextMaximo.text = arma.municionMaxima.ToString();
-                    slot.ammoTextGameObject.SetActive(true); // Asume que tienes una referencia a ammoTextGameObject en tu clase ItemSlot
-                }
-                else
-                {
-                    Debug.LogError("slot.ammoText es null en el slot " + slotObj.name);
-                }
+                // Código adicional para manejar armas...
+            }
+        }
 
-            }
-            else
-            {
-                slot.ammoTextGameObject.SetActive(false);
-            }
-        }
-        else
-        {
-            itemIcon.sprite = null;
-            itemIcon.enabled = false;
-            if (itemCountText != null)
-            {
-                itemCountText.text = "";
-            }
-            slot.ammoTextGameObject.SetActive(false);
-        }
     }
 
 
@@ -646,6 +644,7 @@ public class Inventory : MonoBehaviour
     }
     public void MoveItemToToolbar(int inventoryIndex, int toolbarIndex)
     {
+        Debug.Log("Moviendo ítem desde el inventario al índice de la barra de herramientas: " + toolbarIndex);
         if (items[inventoryIndex] != null && toolbarItems[toolbarIndex] == null)
         {
             toolbarItems[toolbarIndex] = items[inventoryIndex];
@@ -667,7 +666,9 @@ public class Inventory : MonoBehaviour
 
     public void MoveItemToInventory(int toolbarIndex, int inventoryIndex)
     {
-      
+        Debug.Log("Moviendo ítem desde la barra de herramientas al índice del inventario: " + inventoryIndex);
+        // ... (código existente)
+
         if (toolbarItems[toolbarIndex] != null && items[inventoryIndex] == null)
         {
             items[inventoryIndex] = toolbarItems[toolbarIndex];
@@ -680,7 +681,36 @@ public class Inventory : MonoBehaviour
             UpdateToolbarItemUI(toolbarIndex);
         }
     }
-   
+
+    public void AddAmmo(TipoBala tipoBala, int cantidad)
+    {
+        // Encuentra el arma que utiliza este tipo de bala
+        Arma arma = FindWeaponUsingAmmoType(tipoBala);
+        if (arma != null)
+        {
+            arma.municionReserva += cantidad;
+            // Asegúrate de que la munición en reserva no excede el máximo
+            arma.municionReserva = Mathf.Min(arma.municionReserva, arma.municionReservaMaxima);
+        }
+        else
+        {
+            Debug.LogWarning("No se encontró un arma que utilice este tipo de bala: " + tipoBala);
+        }
+    }
+
+    private Arma FindWeaponUsingAmmoType(TipoBala tipoBala)
+    {
+        // Busca entre todas las armas en la escena (o en tu inventario) y encuentra la que utiliza este tipo de bala
+        Arma[] todasLasArmas = FindObjectsOfType<Arma>();
+        foreach (Arma arma in todasLasArmas)
+        {
+            if (arma.tipoBala == tipoBala)
+            {
+                return arma;
+            }
+        }
+        return null;
+    }
 }
 
 
