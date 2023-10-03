@@ -41,7 +41,10 @@ public class Compy :DinosaurioHerbivoro
                 }
             }
         }
+        if(isFollowingPlayer == true)
+        {
 
+        }
         if (isFollowingPlayer)
         {
             agent.SetDestination(playerTransform.position);
