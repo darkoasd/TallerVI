@@ -12,9 +12,9 @@ public class Escopeta : Arma
     public float spreadAngle = 10f;
 
 
-    private void Start()
+    protected override void Start()
     {
-        
+        base.Start();
         tipoBala = TipoBala.Escopeta;
     }
     protected override void Disparar()

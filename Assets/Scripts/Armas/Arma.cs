@@ -12,7 +12,7 @@ public enum TipoBala
 public class Arma : MonoBehaviour
 {
     public TipoBala tipoBala; // Añadido para identificar el tipo de bala que usa esta arma
-
+    //Stats
     public int daño;
     public int municion;
     public int municionMaxima;
@@ -23,15 +23,27 @@ public class Arma : MonoBehaviour
     public PlayerMotor player;
     public float fireRate = 1f; // Tiempo entre disparos
     public float nextTimeToFire = 0f; // Tiempo en el que se podrá disparar nuevamente
+
+    //Sounds
+    public AudioClip sonidoDisparo; // El sonido de tu disparo
+    public AudioClip sonidoRecarga; // El sonido de tu disparo
+    private AudioSource audioSource; // El componente que reproducirá el sonido
     public int SlotIndex { get; set; } = -1;
     public Inventory inventory; // referencia al inventario
 
     public delegate void OnAmmoChanged(int currentAmmo, int maxAmmo);
     public event OnAmmoChanged onAmmoChanged;
 
-    private void Start()
+    protected virtual void Start()
     {
+
         municion = municionMaxima;
+
+        // Inicializar el AudioSource
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.clip = sonidoDisparo;
+        audioSource.playOnAwake = false; // No queremos que el sonido se reproduzca automáticamente al inicio
+
     }
 
     protected virtual void Disparar()
@@ -39,6 +51,12 @@ public class Arma : MonoBehaviour
 
         municion--;
         onAmmoChanged?.Invoke(municion, municionReserva);
+
+        // Reproduce el sonido de disparo
+        if (audioSource != null && sonidoDisparo != null)
+        {
+            audioSource.PlayOneShot(sonidoDisparo);
+        }
 
     }
   
@@ -52,6 +70,12 @@ public class Arma : MonoBehaviour
         municionReserva -= municionARecargar;
 
         onAmmoChanged?.Invoke(municion, municionReserva);
+
+        // Reproduce el sonido de recarga
+        if (audioSource != null && sonidoRecarga != null)
+        {
+            audioSource.PlayOneShot(sonidoRecarga);
+        }
     }
 
     protected virtual void Update()

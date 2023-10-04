@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Pistola : Arma
 {
-    private void Start()
+    protected override void Start()
     {
         tipoBala = TipoBala.Pistola;
+        base.Start();
     }
 
     protected override void Update()
