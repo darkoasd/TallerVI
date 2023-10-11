@@ -31,13 +31,18 @@ public class Inventory : MonoBehaviour
     //Dinos
     public float feedDelay = 5f; // Tiempo de espera en segundos entre alimentaciones
     private float nextFeedTime = 0f; // Tiempo en el que se podrá alimentar nuevamente
+                                 
+    public AudioClip pickupSound; // El sonido de recogida de item
+    private AudioSource audioSource; // El componente que reproducirá el sonido
 
-    
+
     public WeaponController weaponController;
 
     void Start()
     {
-        
+        // Inicializa el AudioSource
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false; // No queremos que el sonido se reproduzca automáticamente al inicio
 
         // Inicializamos la lista de ítems y cantidades con 30 slots vacíos.
         for (int i = 0; i < 30; i++)
@@ -454,7 +459,7 @@ public class Inventory : MonoBehaviour
     public void AddItem(Item item)
     {
         // Marcamos el ítem como recogido.
-        
+        // ...
 
         bool itemAdded = false;
         if (item.isStackable)
@@ -492,6 +497,12 @@ public class Inventory : MonoBehaviour
                     break;
                 }
             }
+        }
+
+        // Reproduce el sonido de recogida de item
+        if (audioSource != null && pickupSound != null)
+        {
+            audioSource.PlayOneShot(pickupSound);
         }
     }
 

@@ -26,7 +26,7 @@ public class PlayerMotor : MonoBehaviour
 
     //Salto
     public float jumpForce = 5.0f; // Fuerza del salto
-    private bool isJumping = false; // Para verificar si el jugador ya está saltando
+    public bool isJumping = false; // Para verificar si el jugador ya está saltando
     public float jumpEnergyCostPercentage = 10.0f; // Porcentaje de energía que se resta al saltar
 
     //Salud
@@ -53,7 +53,9 @@ public class PlayerMotor : MonoBehaviour
     //gravity
     private float verticalSpeed = 0.0f;
     private float gravity = -9.81f;
-
+    //Sounds
+    public AudioClip sonidoSalto; // El sonido de tu salto
+    private AudioSource audioSource; // El componente que reproducirá el sonido
     //item
 
     public TextMeshProUGUI itemPickupText; // Referencia al UI Text
@@ -63,6 +65,8 @@ public class PlayerMotor : MonoBehaviour
 
     void Start()
     {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false; // No queremos que el sonido se reproduzca automáticamente al inicio
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         previousHealth = currentHealth;
@@ -142,6 +146,12 @@ public class PlayerMotor : MonoBehaviour
             {
                 verticalSpeed = Mathf.Sqrt(jumpForce * -2f * gravity);
                 currentEnergy -= 5.0f; // Reducimos 5 unidades de energía
+                isJumping = true;
+                // Reproduce el sonido de salto
+                if (audioSource != null && sonidoSalto != null)
+                {
+                    audioSource.PlayOneShot(sonidoSalto);
+                }
             }
         }
     }

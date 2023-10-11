@@ -29,8 +29,9 @@ public class Item : MonoBehaviour
     public int maxStackAmount; // Si es apilable, ¿cuántos ítems como máximo por espacio en el inventario?
     public int municion; // Añade este campo
     public Arma armaAsociada; // Añadir este campo
-   
 
+    // Variables para la rotación
+    
     // Constructor para facilitar la creación de ítems
     public Item(string _itemName, int _itemID, Sprite _itemIcon, ItemType _itemType, string _description, bool _isStackable = false, int _maxStackAmount = 1)
     {
@@ -43,5 +44,8 @@ public class Item : MonoBehaviour
         maxStackAmount = _maxStackAmount;
         
     }
+    // Método Update para manejar la rotación constante
    
+   
+
 }

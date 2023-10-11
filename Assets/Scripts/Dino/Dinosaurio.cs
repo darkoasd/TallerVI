@@ -22,9 +22,12 @@ public class Dinosaurio : MonoBehaviour
     public GameObject tameBarUi;
     public Slider healthBar;
     public Slider tameBar;
-
-    //bool
+    //Sounds
+    public AudioClip sonidoAlimentacion; // El sonido de alimentar al dinosaurio
+    private AudioSource audioSource; // El componente que reproducirá el sonido
+                                   
     
+
     [System.Serializable]
     public class OnDomesticationChanged : UnityEvent<float> { }
     public OnDomesticationChanged onDomesticationChanged;
@@ -86,7 +89,11 @@ public class Dinosaurio : MonoBehaviour
             EspeciesDomesticadas[GetType().Name] = this;
             Debug.Log("Añadiendo " + GetType().Name + " al diccionario de EspeciesDomesticadas");
         }
-
+        // Reproduce el sonido de alimentación
+        if (audioSource != null && sonidoAlimentacion != null)
+        {
+            audioSource.PlayOneShot(sonidoAlimentacion);
+        }
         // Luego de incrementar el nivel de domesticación, disparamos el evento
         onDomesticationChanged.Invoke(domesticationLevel);
     }
@@ -94,6 +101,8 @@ public class Dinosaurio : MonoBehaviour
     // Inicializa el agente NavMesh y cualquier otra configuración común
     protected virtual void Start()
     {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false; // No queremos que el sonido se reproduzca automáticamente al inicio
         vida = vidaMaxima;
         healthBar.value = CalculatedHealth();
         tameBar.value = CalculatedTame();

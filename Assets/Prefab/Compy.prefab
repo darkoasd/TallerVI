@@ -208,6 +208,7 @@ MonoBehaviour:
   tameBarUi: {fileID: 0}
   healthBar: {fileID: 0}
   tameBar: {fileID: 0}
+  sonidoAlimentacion: {fileID: 8300000, guid: c13837123c978224a849f98c7a8fd1b4, type: 3}
   onDomesticationChanged:
     m_PersistentCalls:
       m_Calls:
