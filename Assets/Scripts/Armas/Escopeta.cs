@@ -52,26 +52,27 @@ public class Escopeta : Arma
                 Debug.Log("Objeto golpeado: " + hit.transform.name);
                 if (hit.collider.isTrigger)
                 {
-                    continue; // Salta a la próxima iteración del bucle
+                    return; // Salta a la próxima iteración del bucle
                 }
                 GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(bulletHole, 5f);
 
                 GameObject muzzleEffect = Instantiate(muzzleEffectPrefab, shootPoint.position, Quaternion.identity);
                 Destroy(muzzleEffect, 2f);
+                if (hit.transform.CompareTag("Compy"))
+                {
+                    Dinosaurio dinosaurio = hit.transform.GetComponent<Dinosaurio>();
+                    if (dinosaurio != null)
+                    {
+                        dinosaurio.RecibirDaño(daño);
+                    }
+                }
             }
             else
             {
                 Debug.Log("No se golpeó ningún objeto");
             }
-            if (hit.transform.CompareTag("Compy"))
-            {
-                Dinosaurio dinosaurio = hit.transform.GetComponent<Dinosaurio>();
-                if (dinosaurio != null)
-                {
-                    dinosaurio.RecibirDaño(daño);
-                }
-            }
+            
 
         }
     }

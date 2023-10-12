@@ -921,6 +921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b11cec77ae07814a8af50be68448a5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tipoBala: 0
   "da\xF1o": 10
   municion: 4
   municionMaxima: 4
@@ -934,6 +935,8 @@ MonoBehaviour:
   player: {fileID: 1495156073480417744, guid: 9741603a60912b5429dca96ca662c7d6, type: 3}
   fireRate: 1
   nextTimeToFire: 0
+  sonidoDisparo: {fileID: 0}
+  sonidoRecarga: {fileID: 0}
   inventory: {fileID: 8597775995830143650, guid: 252bc7d7e0e4dfd4ca31320fb383bc32,
     type: 3}
   fpsCam: {fileID: 0}
