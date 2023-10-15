@@ -9,10 +9,10 @@ public class PlayerMotor : MonoBehaviour
 {
     // Referencia al Compy cercano
     public List<Compy> nearbyCompy = new List<Compy>();
-
+    public Transform playerNeckTransform;
     // Referencia al inventario del jugador
     public Inventory inventory;
-    private GameManager gamemanager;
+    public GameManager gamemanager;
     //Movimiento
     public float speed = 5.0f;
     public float mouseSensitivity = 2.0f;
@@ -25,6 +25,7 @@ public class PlayerMotor : MonoBehaviour
     public float minPitch = -80.0f;
 
     //Salto
+    private float originalJumpForce;
     public float jumpForce = 5.0f; // Fuerza del salto
     public bool isJumping = false; // Para verificar si el jugador ya está saltando
     public float jumpEnergyCostPercentage = 10.0f; // Porcentaje de energía que se resta al saltar
@@ -65,7 +66,9 @@ public class PlayerMotor : MonoBehaviour
 
     void Start()
     {
+        originalJumpForce = jumpForce;
         audioSource = gameObject.AddComponent<AudioSource>();
+
         audioSource.playOnAwake = false; // No queremos que el sonido se reproduzca automáticamente al inicio
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
@@ -155,10 +158,64 @@ public class PlayerMotor : MonoBehaviour
             }
         }
     }
-    
+    private void Fly()
+    {
+        // Eleva al jugador mientras el Compy tiene energía de vuelo
+        if (nearbyCompy[0].flightEnergy > 0)
+        {
+            verticalSpeed = 5.0f; // Ajusta este valor según la velocidad con que quieras que el jugador se eleve
+            nearbyCompy[0].UseFlightEnergy(Time.deltaTime * 5.0f); // Ajusta este valor según la rapidez con que quieras que se agote la energía de vuelo
+        }
+        else
+        {
+            // Si la energía de vuelo se agota, el jugador cae
+            verticalSpeed = gravity * Time.deltaTime;
+        }
+
+        // Aplica el movimiento vertical
+        Vector3 verticalMove = new Vector3(0, verticalSpeed, 0) * Time.deltaTime;
+        characterController.Move(verticalMove);
+    }
+    private void RegenerateCompyFlightEnergy()
+    {
+        // Regenera la energía de vuelo del Compy mientras el jugador está en el suelo
+        nearbyCompy[0].flightEnergy += 5.0f * Time.deltaTime; // Ajusta este valor según la rapidez con que quieras que se regenere la energía de vuelo
+        nearbyCompy[0].flightEnergy = Mathf.Clamp(nearbyCompy[0].flightEnergy, 0, 10.0f); // Asegura que la energía de vuelo no exceda el máximo
+    }
+
     void Update()
     {
-        
+        if (nearbyCompy.Count > 0 && nearbyCompy[0].transform.parent == playerNeckTransform && Input.GetKey(KeyCode.Space))
+        {
+            Fly();
+        }
+        // Si el jugador está en el suelo, regenerar la energía de vuelo del Compy
+        else if (characterController.isGrounded && nearbyCompy.Count > 0)
+        {
+            RegenerateCompyFlightEnergy();
+        }
+        if (Input.GetKeyDown(KeyCode.E) && nearbyCompy.Count > 0)
+        {
+            Compy nearestCompy = nearbyCompy[0];
+            if (nearestCompy.isPlayerNearby && nearestCompy.domesticationLevel >= nearestCompy.domesticationThreshold)
+            {
+                // Si el Compy ya está siendo llevado, suéltalo
+                if (nearestCompy.transform.parent == playerNeckTransform)
+                {
+                    nearestCompy.BeDroppedOrFollow();
+                }
+                // Si el Compy no está siendo llevado, recógelo
+                else
+                {
+                    nearestCompy.BePickedUp(playerNeckTransform);
+                }
+            }
+        }
+        if (currentHealth <= 0)
+        {
+            Debug.Log("Murio");
+            Muerte();
+        }
         if (Time.timeScale == 1f)
         {
             HandleRunning();
@@ -228,6 +285,11 @@ public class PlayerMotor : MonoBehaviour
             itemPickupText.gameObject.SetActive(false); // Ocultar el mensaje
         }
     }
+    private void Muerte()
+    {
+        gamemanager.GameOver();
+    }
+
 
 
 }

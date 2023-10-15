@@ -25,7 +25,7 @@ public class DinosaurioHerbivoro : Dinosaurio
 
         base.Update();
 
-        if (!isFollowingPlayer && !navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
+        if (!isFollowingPlayer && navMeshAgent != null && navMeshAgent.enabled && !navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
         {
             SetRandomDestination();
         }

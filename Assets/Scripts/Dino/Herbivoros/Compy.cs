@@ -7,15 +7,25 @@ using UnityEngine.AI;
 
 public class Compy :DinosaurioHerbivoro
 {
+    public float flightEnergy = 10.0f; // Energía de vuelo inicial del Compy
     public Transform playerTransform;
     public float followDistance = 2f;
-    
+    public GameObject pickupTextCanvas; // Asigna tu Canvas con el texto en el Inspector
+    public bool isPlayerNearby = false;
 
     protected override void Start()
     {
         base.Start();
     }
-
+    public void UseFlightEnergy(float amount)
+    {
+        flightEnergy -= amount;
+        if (flightEnergy <= 0)
+        {
+            flightEnergy = 0;
+            // Código para manejar cuando la energía de vuelo se agota, por ejemplo, soltar el Compy
+        }
+    }
     protected override void Update()
     {
         base.Update();
@@ -41,21 +51,26 @@ public class Compy :DinosaurioHerbivoro
                 }
             }
         }
-        if(isFollowingPlayer == true)
-        {
-
-        }
         if (isFollowingPlayer)
         {
-            agent.SetDestination(playerTransform.position);
+            // Verifica que playerTransform no sea null y que NavMeshAgent esté activo antes de establecer el destino
+            if (playerTransform != null && agent.enabled)
+            {
+                agent.SetDestination(playerTransform.position);
+            }
         }
     }
 
     private void FollowPlayer()
     {
         Debug.Log("Compy ahora está siguiendo al jugador");
-        agent.stoppingDistance = followDistance;
-        agent.SetDestination(playerTransform.position);
+        if (agent != null && agent.enabled && playerTransform != null)
+        {
+            agent.stoppingDistance = followDistance;
+            agent.SetDestination(playerTransform.position);
+      
+        }
+       
     }
 
     public override void Feed(Item item)
@@ -84,6 +99,14 @@ public class Compy :DinosaurioHerbivoro
             if (player != null && !player.nearbyCompy.Contains(this))
             {
                 player.nearbyCompy.Add(this);
+
+                // Solo muestra el texto si el Compy está domesticado
+                if (domesticationLevel >= domesticationThreshold)
+                {
+                    pickupTextCanvas.SetActive(true);
+                }
+
+                isPlayerNearby = true;
             }
         }
     }
@@ -96,6 +119,8 @@ public class Compy :DinosaurioHerbivoro
             if (player != null)
             {
                 player.nearbyCompy.Remove(this);
+                pickupTextCanvas.SetActive(false);
+                isPlayerNearby = false;
             }
         }
     }
@@ -107,5 +132,21 @@ public class Compy :DinosaurioHerbivoro
             EspeciesDomesticadas.Remove(typeof(Compy).Name);
         }
     }
+    public void BePickedUp(Transform playerNeckTransform)
+    {
+        transform.SetParent(playerNeckTransform);
+        transform.localPosition = Vector3.zero; // O ajusta según sea necesario
+        transform.localRotation = Quaternion.identity; // O ajusta según sea necesario
+        isFollowingPlayer = false;
+        agent.enabled = false; // Desactiva el NavMeshAgent mientras es llevado
 
+    }
+
+    public void BeDroppedOrFollow()
+    {
+        // Configura el Compy para ser soltado o para seguir al jugador
+        transform.SetParent(null); // Elimina el parentesco para que no siga al jugador
+        agent.enabled = true; // Reactiva el NavMeshAgent para que el Compy pueda moverse de nuevo
+        isFollowingPlayer = true; // Si quieres que el Compy siga al jugador después de ser soltado
+    }
 }

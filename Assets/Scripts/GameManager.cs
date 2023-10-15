@@ -16,9 +16,10 @@ public class GameManager : MonoBehaviour
     public GameObject inventario;
     private bool isInventoryOpen = false;
     private bool isPaused = false;
+    
 
     public GameMode currentMode = GameMode.Gameplay;
-    public enum GameMode { Gameplay, Shop, Inventory, Pause }
+    public enum GameMode { Gameplay, Shop, Inventory, Pause, GameOver }
     void Start()
     {
         Resume();  // Asegúrate de que el juego comienza con el menú de pausa desactivado y el cursor bloqueado.
@@ -51,6 +52,13 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameMode.Pause:
+                // Configuración para cuando el juego está pausado.
+                Time.timeScale = 0f;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                break;
+
+            case GameMode.GameOver:
                 // Configuración para cuando el juego está pausado.
                 Time.timeScale = 0f;
                 Cursor.lockState = CursorLockMode.None;
@@ -121,11 +129,14 @@ public class GameManager : MonoBehaviour
     {
         menuGameOver.SetActive(true);
         Destroy(player);
+        SetGameMode(GameMode.GameOver);
     }
    
    
     public void RecargarNivel1()
     {
-        SceneManager.LoadScene("Nivel1");
+        print("RECargoNivel");
+        SceneManager.LoadScene("Tutorial");
+        SetGameMode(GameMode.Gameplay);
     }
 }

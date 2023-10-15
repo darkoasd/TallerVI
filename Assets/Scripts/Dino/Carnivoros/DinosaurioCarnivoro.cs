@@ -46,25 +46,42 @@ public class DinosaurioCarnivoro : Dinosaurio
         {
             Transform playerTransform = playerObject.transform;
             float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+            // Lógica para perseguir al jugador
+            if (distanceToPlayer < detectionRange)
+            {
+                Vector3 directionToPlayer = playerTransform.position - transform.position;
+                directionToPlayer.Normalize();
+                Vector3 targetPosition = playerTransform.position - directionToPlayer * stoppingDistance;
+                navMeshAgent.SetDestination(targetPosition);
 
+                if (!isAttacking && distanceToPlayer < detectionRangeAttack)
+                {
+                    Debug.Log("Adding player to targets and starting attack.");
+                    targets.Add(playerTransform);
+                    StartCoroutine(Attack());
+                }
+                else
+                {
+                    Debug.Log("Not attacking player. Distance: " + distanceToPlayer + ", Attack Range: " + detectionRangeAttack);
+                    SetRandomDestination();
+                }
+            }
             if (nearestCompyTarget != null)
             {
                 float distanceToCompy = Vector3.Distance(transform.position, nearestCompyTarget.position);
 
-                // Si el jugador está más cerca o dentro del rango de detección, persigue al jugador.
-                if (distanceToPlayer <= distanceToCompy && distanceToPlayer < detectionRange)
+                if (distanceToCompy < detectionRange)
                 {
-                    Vector3 directionToPlayer = playerTransform.position - transform.position;
-                    directionToPlayer.Normalize();
-                    Vector3 targetPosition = playerTransform.position - directionToPlayer * stoppingDistance;
+                    Vector3 directionToCompy = nearestCompyTarget.position - transform.position;
+                    directionToCompy.Normalize();
+                    Vector3 targetPosition = nearestCompyTarget.position - directionToCompy * stoppingDistance;
                     navMeshAgent.SetDestination(targetPosition);
 
-                    if (!isAttacking && distanceToPlayer < detectionRangeAttack)
+                    if (!isAttacking && distanceToCompy < detectionRangeAttack)
                     {
-                        targets.Add(playerTransform);
+                        targets.Add(nearestCompyTarget);
                         StartCoroutine(Attack());
                     }
-
                     else
                     {
                         SetRandomDestination();
@@ -148,10 +165,20 @@ public class DinosaurioCarnivoro : Dinosaurio
         {
             if (enemyTarget != null)
             {
-                DinosaurioHerbivoro vidaObjetivo = enemyTarget.GetComponent<DinosaurioHerbivoro>();
-                if (vidaObjetivo != null)
+                // Intenta dañar a un DinosaurioHerbivoro
+                DinosaurioHerbivoro vidaObjetivoHerbivoro = enemyTarget.GetComponent<DinosaurioHerbivoro>();
+                if (vidaObjetivoHerbivoro != null)
                 {
-                    vidaObjetivo.RecibirDaño(daño);
+                    vidaObjetivoHerbivoro.RecibirDaño(daño);
+                    continue; // Pasa al siguiente objetivo en la lista
+                }
+
+                // Intenta dañar al Jugador
+                PlayerMotor vidaObjetivoJugador = enemyTarget.GetComponent<PlayerMotor>();
+                if (vidaObjetivoJugador != null)
+                {
+                    vidaObjetivoJugador.TakeDamage(daño);
+                    continue; // Pasa al siguiente objetivo en la lista
                 }
             }
         }

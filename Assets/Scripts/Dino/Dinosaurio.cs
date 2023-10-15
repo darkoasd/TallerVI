@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class Dinosaurio : MonoBehaviour
 {
     // Stats Principales
-    public float vida;
-    public float vidaMaxima;
-    public float daño;
+    public int vida;
+    public int vidaMaxima;
+    public int daño;
     public float velocidad;
 
     // Domesticacion
@@ -111,7 +111,7 @@ public class Dinosaurio : MonoBehaviour
     }
 
     // Método para recibir daño
-    public virtual void RecibirDaño(float cantidad)
+    public virtual void RecibirDaño(int cantidad)
     {
         vida -= cantidad;
         if (vida <= 0)
