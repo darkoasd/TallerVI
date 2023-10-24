@@ -32,9 +32,9 @@ public class PlayerMotor : MonoBehaviour
 
     //Salud
 
-    public int maxHealth = 10;
-    public int currentHealth;
-    private int previousHealth;
+    public float maxHealth = 10;
+    public float currentHealth;
+    private float previousHealth;
     public HealthBar healthBar; // Referencia a tu script de HealthBar
 
     //Energia
@@ -86,7 +86,7 @@ public class PlayerMotor : MonoBehaviour
         energyFloat = currentEnergy;
 
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);

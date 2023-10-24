@@ -199,37 +199,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 044b3e494baef5949bbedc8c9f00a07a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vida: 5
-  vidaMaxima: 0
+  vida: 10
+  vidaMaxima: 10
   "da\xF1o": 1
   velocidad: 3
   domesticationLevel: 0
   domesticationThreshold: 3
-  healthBarUi: {fileID: 0}
-  tameBarUi: {fileID: 0}
-  healthBar: {fileID: 0}
-  tameBar: {fileID: 0}
+  healthBarUi: {fileID: 3864470467172137449}
+  tameBarUi: {fileID: 3661747958703993028}
+  healthBar: {fileID: 2096105886057691208}
+  tameBar: {fileID: 7963405629690456126}
   sonidoAlimentacion: {fileID: 8300000, guid: c13837123c978224a849f98c7a8fd1b4, type: 3}
   onDomesticationChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4421016017233923802, guid: 35280a52afe51424f94c5bfd56b88462,
-          type: 3}
-        m_TargetAssemblyTypeName: TameBar, Assembly-CSharp
-        m_MethodName: SetProgress
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  wanderRadius: 10
-  waitTime: 5
-  playerTransform: {fileID: 8832024499316587843, guid: 9741603a60912b5429dca96ca662c7d6,
-    type: 3}
+      m_Calls: []
+  wanderRadius: 20
+  waitTime: 10
+  flightEnergy: 10
+  playerTransform: {fileID: 0}
   followDistance: 5
   pickupTextCanvas: {fileID: 9142425625850394089}
   isPlayerNearby: 0

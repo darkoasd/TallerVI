@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     public PlayerMotor player;
 
+    public GameObject enciclopediaPanel;
     public GameObject menuGameOver;
     public GameObject menuPausaUI;
     //Inventory
@@ -19,7 +20,7 @@ public class GameManager : MonoBehaviour
     
 
     public GameMode currentMode = GameMode.Gameplay;
-    public enum GameMode { Gameplay, Shop, Inventory, Pause, GameOver }
+    public enum GameMode { Gameplay, Shop, Inventory, Pause, GameOver, Enciclopedia }
     void Start()
     {
         Resume();  // Asegúrate de que el juego comienza con el menú de pausa desactivado y el cursor bloqueado.
@@ -64,6 +65,12 @@ public class GameManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 break;
+            case GameMode.Enciclopedia:
+                // Configuración para cuando el juego está pausado.
+                Time.timeScale = 0f;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                break;
         }
     }
     void Update()
@@ -80,8 +87,27 @@ public class GameManager : MonoBehaviour
                 Pause();
             }
         }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            SetGameMode(GameMode.Enciclopedia);
+            abrirEnclicopedia();
+
+        }
+        else
+        {
+            
+        }
     }
-   
+    public void abrirEnclicopedia()
+    {
+        enciclopediaPanel.SetActive(true);
+    }
+    public void cerrarEnclicopedia()
+    {
+        enciclopediaPanel.SetActive(false);
+        Resume();
+    }
+
     public void Resume()
     {
         menuPausaUI.SetActive(false);
