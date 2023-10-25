@@ -129,7 +129,7 @@ public class Inventory : MonoBehaviour
         }
 
         // Verificar si ha pasado el tiempo suficiente desde la última alimentación
-        if (itemToUse.itemType == Item.ItemType.Consumable && Time.time < nextFeedTime)
+        if (itemToUse.itemType == Item.ItemType.ConsumableTameo && Time.time < nextFeedTime)
         {
             Debug.LogWarning("Aún no puedes alimentar nuevamente.");
             return;
@@ -145,7 +145,7 @@ public class Inventory : MonoBehaviour
                 equippedWeapon = itemToUse;
                 equippedWeaponSlotIndex = index;
                 break;
-            case Item.ItemType.Consumable:
+            case Item.ItemType.ConsumableTameo:
                 Debug.Log("Intentando usar ítem consumible: " + itemToUse.itemName);
                 if (player.nearbyCompy.Count > 0 && toolbarItemQuantities[index] > 0)
                 {
@@ -156,6 +156,18 @@ public class Inventory : MonoBehaviour
 
                     // Actualizar el tiempo en el que se podrá alimentar nuevamente
                     nextFeedTime = Time.time + feedDelay;
+                }
+                break;
+            case Item.ItemType.Consumable:
+                if(toolbarItemQuantities[index] > 0 && player.currentHealth < player.maxHealth)
+                {
+                    player.CurarPlayer();
+
+                    ReduceItemQuantity(index);
+                }
+                else
+                {
+                    print("Nocuro");
                 }
                 break;
             case Item.ItemType.AmmoEscopeta:

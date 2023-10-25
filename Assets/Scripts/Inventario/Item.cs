@@ -10,6 +10,7 @@ public class Item : MonoBehaviour
         
         Weapon,
         Consumable,
+        ConsumableTameo,
         QuestItem,
         Miscellaneous,
         AmmoEscopeta,

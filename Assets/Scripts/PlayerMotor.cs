@@ -7,6 +7,7 @@ using TMPro;
 
 public class PlayerMotor : MonoBehaviour
 {
+    public float curarse;
     // Referencia al Compy cercano
     public List<Compy> nearbyCompy = new List<Compy>();
     public Transform playerNeckTransform;
@@ -288,6 +289,10 @@ public class PlayerMotor : MonoBehaviour
     private void Muerte()
     {
         gamemanager.GameOver();
+    }
+    public void CurarPlayer()
+    {
+        currentHealth = curarse + currentHealth;
     }
 
 
