@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8500839675470186523}
   - component: {fileID: 3120341628160103067}
   - component: {fileID: 682713783443103733}
+  - component: {fileID: 2927113497333015932}
   m_Layer: 0
   m_Name: Raptor
   m_TagString: Raptor
@@ -150,12 +151,12 @@ MonoBehaviour:
   "da\xF1o": 7
   velocidad: 8
   domesticationLevel: 0
-  domesticationThreshold: 7
+  domesticationThreshold: 6
   healthBarUi: {fileID: 3699863983068000219}
   tameBarUi: {fileID: 1593832885280850887}
   healthBar: {fileID: 6539288313115196902}
   tameBar: {fileID: 1367809799959975975}
-  sonidoAlimentacion: {fileID: 0}
+  sonidoAlimentacion: {fileID: 8300000, guid: c13837123c978224a849f98c7a8fd1b4, type: 3}
   onDomesticationChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -167,7 +168,36 @@ MonoBehaviour:
   showDetectionRange: 1
   waitTime: 8
   attackCollider: {fileID: 0}
+  followDistance: 5
   isTrapped: 0
+  domesticationIncreasePerFeed: 2
+--- !u!54 &2927113497333015932
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164235260746252473}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!1 &1593832885280850887
 GameObject:
   m_ObjectHideFlags: 0
