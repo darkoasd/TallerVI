@@ -292,7 +292,8 @@ public class PlayerMotor : MonoBehaviour
     }
     public void CurarPlayer()
     {
-        currentHealth = curarse + currentHealth;
+        currentHealth += curarse;
+        currentHealth = Mathf.Min(currentHealth, maxHealth);
     }
 
 
