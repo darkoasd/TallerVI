@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 682713783443103733}
   m_Layer: 0
   m_Name: Raptor
-  m_TagString: Untagged
+  m_TagString: Raptor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -155,6 +155,7 @@ MonoBehaviour:
   tameBarUi: {fileID: 1593832885280850887}
   healthBar: {fileID: 6539288313115196902}
   tameBar: {fileID: 1367809799959975975}
+  sonidoAlimentacion: {fileID: 0}
   onDomesticationChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -162,8 +163,11 @@ MonoBehaviour:
   detectionRange: 15
   detectionRangeAttack: 4
   wanderRadius: 25
+  stoppingDistance: 2
   showDetectionRange: 1
   waitTime: 8
+  attackCollider: {fileID: 0}
+  isTrapped: 0
 --- !u!1 &1593832885280850887
 GameObject:
   m_ObjectHideFlags: 0

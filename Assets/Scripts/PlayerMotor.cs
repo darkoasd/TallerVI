@@ -10,6 +10,7 @@ public class PlayerMotor : MonoBehaviour
     public float curarse;
     // Referencia al Compy cercano
     public List<Compy> nearbyCompy = new List<Compy>();
+    public List<Raptor> nearbyRaptor = new List<Raptor>();
     public Transform playerNeckTransform;
     // Referencia al inventario del jugador
     public Inventory inventory;

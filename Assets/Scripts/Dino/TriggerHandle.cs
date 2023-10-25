@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TriggerHandle : MonoBehaviour
 {
-    public Compy compy;
-
+    private Compy compy;
+    private Raptor raptor;
 
     private void Start()
     {
@@ -14,6 +14,11 @@ public class TriggerHandle : MonoBehaviour
         {
             compy = GetComponentInParent<Compy>();
         }
+        if (raptor == null)
+        {
+            raptor = GetComponentInParent<Raptor>();
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -22,6 +27,10 @@ public class TriggerHandle : MonoBehaviour
         {
             compy.HandleTriggerEnter(other);
         }
+        if (raptor != null)
+        {
+            raptor.HandleTriggerEnter(other);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -29,6 +38,10 @@ public class TriggerHandle : MonoBehaviour
         if (compy != null)
         {
             compy.HandleTriggerExit(other);
+        }
+        if (raptor != null)
+        {
+            raptor.HandleTriggerExit(other);
         }
     }
 }

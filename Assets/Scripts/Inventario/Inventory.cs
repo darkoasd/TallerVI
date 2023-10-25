@@ -149,12 +149,14 @@ public class Inventory : MonoBehaviour
                 Debug.Log("Intentando usar ítem consumible: " + itemToUse.itemName);
                 if (player.nearbyCompy.Count > 0 && toolbarItemQuantities[index] > 0)
                 {
-                    // Alimentar al primer Compy en la lista, o seleccionar de alguna otra manera.
                     player.nearbyCompy[0].Feed(itemToUse);
-                    // Aquí también debes reducir la cantidad del ítem en el inventario
                     ReduceItemQuantity(index);
-
-                    // Actualizar el tiempo en el que se podrá alimentar nuevamente
+                    nextFeedTime = Time.time + feedDelay;
+                }
+                else if (player.nearbyRaptor.Count > 0 && toolbarItemQuantities[index] > 0) // Añadimos esta condición
+                {
+                    player.nearbyRaptor[0].Feed(itemToUse); // Alimentamos al Raptor
+                    ReduceItemQuantity(index);
                     nextFeedTime = Time.time + feedDelay;
                 }
                 break;
