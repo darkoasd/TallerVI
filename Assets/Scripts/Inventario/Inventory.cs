@@ -129,7 +129,7 @@ public class Inventory : MonoBehaviour
         }
 
         // Verificar si ha pasado el tiempo suficiente desde la última alimentación
-        if (itemToUse.itemType == Item.ItemType.ConsumableTameo && Time.time < nextFeedTime)
+        if (itemToUse.itemType == Item.ItemType.ConsumableTameoCompy && Time.time < nextFeedTime)
         {
             Debug.LogWarning("Aún no puedes alimentar nuevamente.");
             return;
@@ -145,15 +145,17 @@ public class Inventory : MonoBehaviour
                 equippedWeapon = itemToUse;
                 equippedWeaponSlotIndex = index;
                 break;
-            case Item.ItemType.ConsumableTameo:
+            case Item.ItemType.ConsumableTameoCompy:
                 Debug.Log("Intentando usar ítem consumible: " + itemToUse.itemName);
                 if (player.nearbyCompy.Count > 0 && toolbarItemQuantities[index] > 0)
                 {
                     player.nearbyCompy[0].Feed(itemToUse);
                     ReduceItemQuantity(index);
                     nextFeedTime = Time.time + feedDelay;
-                }
-                else if (player.nearbyRaptor.Count > 0 && toolbarItemQuantities[index] > 0) // Añadimos esta condición
+                }                
+                break;
+            case Item.ItemType.ConsumableTameoRaptor:
+                if (player.nearbyRaptor.Count > 0 && toolbarItemQuantities[index] > 0) // Añadimos esta condición
                 {
                     player.nearbyRaptor[0].Feed(itemToUse); // Alimentamos al Raptor
                     ReduceItemQuantity(index);

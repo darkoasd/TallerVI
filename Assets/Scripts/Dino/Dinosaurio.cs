@@ -67,12 +67,12 @@ public class Dinosaurio : MonoBehaviour
         }
     }
 
-    float CalculatedHealth()
+    public float CalculatedHealth()
     {
         return vida / vidaMaxima;
     }
 
-    float CalculatedTame()
+    public float CalculatedTame()
     {
         return domesticationLevel;
     }
@@ -101,6 +101,7 @@ public class Dinosaurio : MonoBehaviour
     // Inicializa el agente NavMesh y cualquier otra configuración común
     protected virtual void Start()
     {
+
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false; // No queremos que el sonido se reproduzca automáticamente al inicio
         vida = vidaMaxima;

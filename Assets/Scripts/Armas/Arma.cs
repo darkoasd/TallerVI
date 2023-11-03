@@ -46,8 +46,14 @@ public class Arma : MonoBehaviour
 
     }
 
-    protected virtual void Disparar()
+    
+    public virtual void Disparar()
     {
+        if (municion <= 0)
+        {
+            Debug.Log("Sin munición");
+            return; // No hay munición, por lo tanto, no se ejecuta el disparo
+        }
 
         municion--;
         onAmmoChanged?.Invoke(municion, municionReserva);
@@ -57,9 +63,8 @@ public class Arma : MonoBehaviour
         {
             audioSource.PlayOneShot(sonidoDisparo);
         }
-
     }
-  
+
 
     protected virtual void Recargar()
     {
@@ -80,6 +85,7 @@ public class Arma : MonoBehaviour
 
     protected virtual void Update()
     {
+      
         Debug.Log("Update de Arma ejecutándose");
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -88,12 +94,7 @@ public class Arma : MonoBehaviour
             Recargar();
         }
 
-        if (Input.GetMouseButtonDown(0) && municion > 0 && Time.time >= nextTimeToFire)
-        {
-            Debug.Log("Botón del mouse presionado para disparar");
-            nextTimeToFire = Time.time + 1f / fireRate; // Configura el siguiente momento para disparar
-            Disparar();
-        }
+       
     }
     
    

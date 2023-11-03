@@ -21,7 +21,7 @@ public class RifleFrancotirador : Arma
         // Si necesitas una lógica de recarga diferente para la pistola, puedes sobrescribir el método aquí
         base.Recargar();
     }
-    protected override void Disparar()
+    public override void Disparar()
     {
         base.Disparar();
 

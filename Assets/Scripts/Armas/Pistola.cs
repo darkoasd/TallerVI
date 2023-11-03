@@ -24,7 +24,7 @@ public class Pistola : Arma
     }
 
     // Si quieres modificar el comportamiento del disparo específico de la pistola, puedes hacerlo así:
-    protected override void Disparar()
+    public override void Disparar()
     {
         base.Disparar();
         
@@ -81,6 +81,14 @@ public class Pistola : Arma
                 if (dinosaurio != null)
                 {
                     dinosaurio.RecibirDaño(daño);
+                }
+            }
+            if (hit.transform.CompareTag("Raptor"))
+            {
+                DinosaurioCarnivoro raptor = hit.transform.GetComponent<DinosaurioCarnivoro>();
+                if (raptor != null)
+                {
+                    raptor.RecibirDaño(daño);
                 }
             }
         }

@@ -17,7 +17,7 @@ public class Escopeta : Arma
         base.Start();
         tipoBala = TipoBala.Escopeta;
     }
-    protected override void Disparar()
+    public override void Disparar()
     {
         base.Disparar();
        
@@ -66,6 +66,18 @@ public class Escopeta : Arma
                     {
                         dinosaurio.RecibirDaño(daño);
                     }
+                }
+                if (hit.transform.CompareTag("Raptor"))
+                {
+                    DinosaurioCarnivoro raptor = hit.transform.GetComponent<DinosaurioCarnivoro>();
+                    if (raptor != null)
+                    {
+                        raptor.RecibirDaño(daño);
+                    }
+                }
+                if (hit.collider.isTrigger)
+                {
+                    continue; // Continúa con la siguiente iteración del bucle
                 }
             }
             else

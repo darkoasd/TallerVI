@@ -25,6 +25,8 @@ public class Raptor : DinosaurioCarnivoro
     }
     protected override void Update()
     {
+        healthBar.value = CalculatedHealth();
+        tameBar.value = CalculatedTame();
         if (!isTrapped) // Si el Raptor no está atrapado, entonces ejecuta el Update de la clase base.
         {
             base.Update();
@@ -42,7 +44,7 @@ public class Raptor : DinosaurioCarnivoro
     {
         if (isTrapped)
         {
-            if (item.itemType == Item.ItemType.ConsumableTameo) // Asumiendo que la carne es del tipo ConsumableTameo.
+            if (item.itemType == Item.ItemType.ConsumableTameoRaptor) // Asumiendo que la carne es del tipo ConsumableTameo.
             {
                 // Lógica de alimentación aquí.
                 // Por ejemplo, aumentar el nivel de domesticación.

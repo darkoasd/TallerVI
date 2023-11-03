@@ -5,6 +5,8 @@ using TMPro;
 
 public class WeaponController : MonoBehaviour
 {
+    public Animator animator;
+    private float nextTimeToFire = 0f;
     public GameObject shotgun;
     public GameObject pistol;
     public GameObject rifle;
@@ -20,13 +22,16 @@ public class WeaponController : MonoBehaviour
     }
     private void Update()
     {
-      
+        if (Input.GetMouseButton(0) && currentWeapon != null)
+        {
+            Shoot();
+        }
     }
     public void EquipWeapon(Item weapon)
     {
         Debug.Log("Equipando arma: " + weapon.itemName);
         DeactivateAllWeapons();
-
+        ResetWeaponAnimations();
         GameObject weaponPrefab = null;
 
         switch (weapon.itemName)
@@ -34,14 +39,17 @@ public class WeaponController : MonoBehaviour
             case "Escopeta":
                 shotgun.SetActive(true);
                 currentWeapon = shotgun;
+                animator.SetBool("isShotgunActive", true);
                 break;
             case "Pistola":
                 pistol.SetActive(true);
                 currentWeapon = pistol;
+                animator.SetBool("isPistolActive", true);
                 break;
             case "Rifle":
                 rifle.SetActive(true);
                 currentWeapon = rifle;
+                animator.SetBool("isRifleActive", true);
                 break;
             default:
                 Debug.LogWarning("Arma no reconocida.");
@@ -80,6 +88,12 @@ public class WeaponController : MonoBehaviour
     {
         textMunicion.text = currentAmmo + " / " + maxAmmo;
     }
+    private void ResetWeaponAnimations()
+    {
+        animator.SetBool("isShotgunActive", false);
+        animator.SetBool("isPistolActive", false);
+        animator.SetBool("isRifleActive", false);
+    }
 
     private void DeactivateAllWeapons()
     {
@@ -102,9 +116,18 @@ public class WeaponController : MonoBehaviour
     // Por ejemplo, si quieres disparar, puedes hacer algo como:
     public void Shoot()
     {
-        if (currentWeapon != null)
+        if (currentWeapon != null && Time.time >= nextTimeToFire)
         {
-            // Lógica de disparo aquí
+            Arma armaScript = currentWeapon.GetComponent<Arma>();
+            if (armaScript != null && armaScript.municion > 0)
+            {
+                nextTimeToFire = Time.time + 1f / armaScript.fireRate;
+                armaScript.Disparar();
+            }
+            else
+            {
+                Debug.Log("No hay munición o aún no es tiempo de disparar.");
+            }
         }
     }
 }

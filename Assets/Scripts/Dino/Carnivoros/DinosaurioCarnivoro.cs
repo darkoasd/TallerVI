@@ -33,6 +33,7 @@ public class DinosaurioCarnivoro : Dinosaurio
    
     protected override void Update()
     {
+        base.Update();
         targets.RemoveAll(target => target == null);
         timeSinceLastAttack += Time.deltaTime;
 
