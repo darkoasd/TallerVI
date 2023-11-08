@@ -11,7 +11,7 @@ public class Dinosaurio : MonoBehaviour
     public float vidaMaxima;
     public float daño;
     public float velocidad;
-
+    public int pointsValue = 10;
     // Domesticacion
     protected NavMeshAgent agent;
     public int domesticationLevel = 0;
@@ -25,9 +25,9 @@ public class Dinosaurio : MonoBehaviour
     //Sounds
     public AudioClip sonidoAlimentacion; // El sonido de alimentar al dinosaurio
     private AudioSource audioSource; // El componente que reproducirá el sonido
-                                   
-    
 
+
+    public UnityEvent<int> onDeath; // Asegúrate de que el evento pueda llevar un int como parámetro
     [System.Serializable]
     public class OnDomesticationChanged : UnityEvent<float> { }
     public OnDomesticationChanged onDomesticationChanged;
@@ -57,13 +57,14 @@ public class Dinosaurio : MonoBehaviour
         {
             healthBarUi.SetActive(true);
         }
-        if (vida <= 0)
-        {
-            Morir();
-        }
+       
         if (vida > vidaMaxima)
         {
             vida = vidaMaxima;
+        }
+        if (vida <= 0)
+        {
+            Morir(gameObject);
         }
     }
 
@@ -101,7 +102,17 @@ public class Dinosaurio : MonoBehaviour
     // Inicializa el agente NavMesh y cualquier otra configuración común
     protected virtual void Start()
     {
-
+        onDeath = new UnityEvent<int>();
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        if (gameManager != null)
+        {
+            gameManager.SubscribeToDinosaurDeath(this);
+            Debug.Log("Subscribed to dinosaur death event.");
+        }
+        else
+        {
+            Debug.Log("GameManager not found.");
+        }
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false; // No queremos que el sonido se reproduzca automáticamente al inicio
         vida = vidaMaxima;
@@ -112,22 +123,28 @@ public class Dinosaurio : MonoBehaviour
     }
 
     // Método para recibir daño
-    public virtual void RecibirDaño(float cantidad)
+    public virtual void RecibirDaño(float cantidad, GameObject atacante)
     {
         vida -= cantidad;
+        Debug.Log(gameObject.name + " recibió daño. Vida restante: " + vida);
         if (vida <= 0)
         {
-            Morir();
+            Morir(atacante);
         }
     }
 
     // Método para manejar la muerte del dinosaurio
-    protected virtual void Morir()
+    protected virtual void Morir(GameObject atacante)
     {
-        // Aquí va el código para manejar la muerte del dinosaurio
-
+        Debug.Log(gameObject.name + " ha muerto. Atacante: " + atacante.name);
         // Si este dinosaurio estaba domesticado, removerlo del diccionario
         EspeciesDomesticadas.Remove(GetType().Name);
+
+        // Verifica si el atacante es el jugador antes de disparar el evento
+        if (atacante != null && atacante.CompareTag("Player"))
+        {
+            onDeath.Invoke(pointsValue); // Pasa el valor de los puntos al evento
+        }
 
         // Destruir el objeto del dinosaurio
         Destroy(gameObject);

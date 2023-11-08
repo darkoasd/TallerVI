@@ -184,7 +184,7 @@ public class DinosaurioCarnivoro : Dinosaurio
                 DinosaurioHerbivoro vidaObjetivoHerbivoro = enemyTarget.GetComponent<DinosaurioHerbivoro>();
                 if (vidaObjetivoHerbivoro != null)
                 {
-                    vidaObjetivoHerbivoro.RecibirDaño(daño);
+                    vidaObjetivoHerbivoro.RecibirDaño(daño,gameObject);
                     continue; // Pasa al siguiente objetivo en la lista
                 }
 

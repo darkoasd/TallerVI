@@ -66,12 +66,6 @@ public class DinosaurioHerbivoro : Dinosaurio
             isFollowingPlayer = true;
         }
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("DinosaurioCarnivoro"))
-        {
-            RecibirDaño(daño);
-        }
-    }
+   
 }
 

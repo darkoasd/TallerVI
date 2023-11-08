@@ -64,7 +64,7 @@ public class Escopeta : Arma
                     Dinosaurio dinosaurio = hit.transform.GetComponent<Dinosaurio>();
                     if (dinosaurio != null)
                     {
-                        dinosaurio.RecibirDaño(daño);
+                        dinosaurio.RecibirDaño(daño,gameObject);
                     }
                 }
                 if (hit.transform.CompareTag("Raptor"))
@@ -72,7 +72,7 @@ public class Escopeta : Arma
                     DinosaurioCarnivoro raptor = hit.transform.GetComponent<DinosaurioCarnivoro>();
                     if (raptor != null)
                     {
-                        raptor.RecibirDaño(daño);
+                        raptor.RecibirDaño(daño,gameObject);
                     }
                 }
                 if (hit.collider.isTrigger)

@@ -68,11 +68,11 @@ public class Pistola : Arma
 
             // Instanciamos el "Bullet Hole" en el punto de impacto
             GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(bulletHole, 5f);
+            Destroy(bulletHole, 2f);
 
             // Instanciamos el efecto de disparo
             GameObject muzzleEffect = Instantiate(muzzleEffectPrefab, shootPoint.position, Quaternion.identity);
-            Destroy(muzzleEffect, 2f);
+            Destroy(muzzleEffect, 1f);
 
             // Si golpea un "Compy", inflige daño
             if (hit.transform.CompareTag("Compy"))
@@ -80,7 +80,7 @@ public class Pistola : Arma
                 Dinosaurio dinosaurio = hit.transform.GetComponent<Dinosaurio>();
                 if (dinosaurio != null)
                 {
-                    dinosaurio.RecibirDaño(daño);
+                    dinosaurio.RecibirDaño(daño,gameObject);
                 }
             }
             if (hit.transform.CompareTag("Raptor"))
@@ -88,7 +88,7 @@ public class Pistola : Arma
                 DinosaurioCarnivoro raptor = hit.transform.GetComponent<DinosaurioCarnivoro>();
                 if (raptor != null)
                 {
-                    raptor.RecibirDaño(daño);
+                    raptor.RecibirDaño(daño,gameObject);
                 }
             }
         }

@@ -1001,6 +1001,7 @@ MonoBehaviour:
   vidaMaxima: 20
   "da\xF1o": 3
   velocidad: 5
+  pointsValue: 6
   domesticationLevel: 0
   domesticationThreshold: 6
   healthBarUi: {fileID: 3962332658321010129}
@@ -1008,6 +1009,9 @@ MonoBehaviour:
   healthBar: {fileID: 720528337205340671}
   tameBar: {fileID: 3542725110255000877}
   sonidoAlimentacion: {fileID: 8300000, guid: c13837123c978224a849f98c7a8fd1b4, type: 3}
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
   onDomesticationChanged:
     m_PersistentCalls:
       m_Calls: []

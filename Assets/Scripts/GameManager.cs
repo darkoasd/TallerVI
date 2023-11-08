@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,12 +18,15 @@ public class GameManager : MonoBehaviour
     public GameObject inventario;
     private bool isInventoryOpen = false;
     private bool isPaused = false;
-    
+    //shop
+    public TextMeshProUGUI pointsText; // Referencia al texto de TextMeshPro
+    public int points = 0; // Variable para almacenar los puntos
 
     public GameMode currentMode = GameMode.Gameplay;
     public enum GameMode { Gameplay, Shop, Inventory, Pause, GameOver, Enciclopedia }
     void Start()
     {
+        UpdatePointsText(); // Actualiza el texto al iniciar
         Resume();  // Asegúrate de que el juego comienza con el menú de pausa desactivado y el cursor bloqueado.
     }
     public void SetGameMode(GameMode newMode)
@@ -98,6 +102,30 @@ public class GameManager : MonoBehaviour
             
         }
     }
+    public void AddPoints(int amount)
+    {
+        points += amount; // Añade la cantidad de puntos
+        UpdatePointsText(); // Actualiza el texto
+    }
+
+    private void UpdatePointsText()
+    {
+        if (pointsText != null)
+        {
+            pointsText.text = "Puntos: " + points.ToString(); // Actualiza el texto de TextMeshPro
+        }
+    }
+    // Método para suscribirse al evento de muerte del dinosaurio
+    public void SubscribeToDinosaurDeath(Dinosaurio dinosaur)
+    {
+        dinosaur.onDeath.AddListener(HandleDinosaurDeath); // Suscribe el método correcto al evento
+        Debug.Log("GameManager is now listening for " + dinosaur.name + "'s death.");
+    }
+    private void HandleDinosaurDeath(int pointsAwarded)
+    {
+        AddPoints(pointsAwarded);
+    }
+
     public void abrirEnclicopedia()
     {
         enciclopediaPanel.SetActive(true);

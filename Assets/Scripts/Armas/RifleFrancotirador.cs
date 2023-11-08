@@ -77,7 +77,7 @@ public class RifleFrancotirador : Arma
                 Dinosaurio dinosaurio = hit.transform.GetComponent<Dinosaurio>();
                 if (dinosaurio != null)
                 {
-                    dinosaurio.RecibirDaño(daño);
+                    dinosaurio.RecibirDaño(daño,gameObject);
                 }
             }
         }
