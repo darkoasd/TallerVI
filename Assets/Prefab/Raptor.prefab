@@ -743,7 +743,7 @@ Transform:
   m_GameObject: {fileID: 7216650468737465100}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5486586, y: 0.4460648, z: -0.4460648, w: -0.5486586}
-  m_LocalPosition: {x: 0, y: 26.36, z: 0}
+  m_LocalPosition: {x: 0, y: 106, z: 0}
   m_LocalScale: {x: 28.838226, y: 28.83821, z: 28.838219}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1000,7 +1000,7 @@ MonoBehaviour:
   vida: 20
   vidaMaxima: 20
   "da\xF1o": 3
-  velocidad: 5
+  velocidad: 4
   pointsValue: 6
   domesticationLevel: 0
   domesticationThreshold: 6
