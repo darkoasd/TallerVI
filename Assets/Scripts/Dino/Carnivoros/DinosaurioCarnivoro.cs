@@ -18,17 +18,21 @@ public class DinosaurioCarnivoro : Dinosaurio
     //bool
     private bool isWandering = true;
      bool isAttacking = false;
+    private bool hasChosenPath = false;
     private bool isCurrentlyAttacking = false; // Variable para rastrear si está atacando actualmente
     //Attack
     private float attackCooldown = 2f; // Tiempo de espera entre ataques
     private float timeSinceLastAttack = 0f;
     public Collider attackCollider;
 
+    private Animator animator;
     protected override void Start()
     {
         base.Start(); 
         navMeshAgent = GetComponent<NavMeshAgent>();
         attackCollider.enabled = false;
+
+        animator = GetComponent<Animator>();
     }
    
     protected override void Update()
@@ -42,7 +46,16 @@ public class DinosaurioCarnivoro : Dinosaurio
 
         // Encuentra el jugador en la escena (ajusta la etiqueta según tu configuración)
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-
+        if (navMeshAgent.remainingDistance > stoppingDistance && !isCurrentlyAttacking)
+        {
+            // Si el dinosaurio está en movimiento y no está atacando, activa la animación de caminar
+            animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            // Si no, desactiva la animación de caminar
+            animator.SetBool("isWalking", false);
+        }
         if (playerObject != null)
         {
             Transform playerTransform = playerObject.transform;
@@ -145,6 +158,7 @@ public class DinosaurioCarnivoro : Dinosaurio
         attackCollider.enabled = true;
         CausarDañoAlObjetivo();
         Debug.Log("Ataque activado y collider de ataque habilitado.");
+        animator.SetBool("isAttacking", true);
 
         // Realiza acciones de ataque aquí, como animaciones o efectos de sonido
 
@@ -152,7 +166,7 @@ public class DinosaurioCarnivoro : Dinosaurio
 
         attackCollider.enabled = false;
         Debug.Log("Collider de ataque desactivado.");
-
+        animator.SetBool("isAttacking", false);
         yield return new WaitForSeconds(attackCooldown);
 
         navMeshAgent.isStopped = false;
@@ -203,19 +217,26 @@ public class DinosaurioCarnivoro : Dinosaurio
         return nearestTarget;
     }
     private void SetRandomDestination()
+    { 
+        if (isWandering && !isCurrentlyAttacking)
     {
-        if (isWandering)
+        // Elige un punto aleatorio dentro de un radio alrededor del dinosaurio
+        Vector3 randomDirection = Random.insideUnitSphere * wanderRadius;
+        randomDirection += transform.position;
+        NavMeshHit navMeshHit;
+        
+        if (NavMesh.SamplePosition(randomDirection, out navMeshHit, wanderRadius, 1))
         {
-            // Elige un punto aleatorio dentro de un radio alrededor del dinosaurio
-            Vector3 randomDirection = Random.insideUnitSphere * wanderRadius;
-            randomDirection += transform.position;
-            NavMeshHit navMeshHit;
-            NavMesh.SamplePosition(randomDirection, out navMeshHit, wanderRadius, 1);
             destination = navMeshHit.position;
             navMeshAgent.SetDestination(destination);
-
-            StartCoroutine(WaitBeforeNextDestination());
         }
+        else
+        {
+            // Si no se encuentra un punto válido, no hagas nada o elige otro punto.
+        }
+
+        StartCoroutine(WaitBeforeNextDestination());
+    }
     }
     private IEnumerator WaitBeforeNextDestination()
     {

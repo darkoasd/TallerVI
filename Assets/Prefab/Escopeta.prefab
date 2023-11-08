@@ -942,7 +942,7 @@ MonoBehaviour:
   fpsCam: {fileID: 0}
   numDeBalas: 10
   "dispersi\xF3n": 5
-  range: 20
+  range: 50
   pelletsPerShot: 6
   spreadAngle: 10
 --- !u!114 &8952172913652426168
