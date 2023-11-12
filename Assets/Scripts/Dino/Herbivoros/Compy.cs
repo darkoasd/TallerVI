@@ -126,6 +126,15 @@ public class Compy :DinosaurioHerbivoro
     }
     private void OnDestroy()
     {
+        if (playerTransform != null) // Asegúrate de que playerTransform no es nulo
+        {
+            PlayerMotor player = playerTransform.GetComponent<PlayerMotor>();
+            if (player != null)
+            {
+                player.CompyDestroyed(this);
+            }
+        }
+       
         // Si este Compy está siendo seguido, lo eliminamos de EspeciesDomesticadas al ser destruido
         if (isFollowingPlayer)
         {

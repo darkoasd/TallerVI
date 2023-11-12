@@ -184,6 +184,13 @@ public class PlayerMotor : MonoBehaviour
         nearbyCompy[0].flightEnergy += 5.0f * Time.deltaTime; // Ajusta este valor según la rapidez con que quieras que se regenere la energía de vuelo
         nearbyCompy[0].flightEnergy = Mathf.Clamp(nearbyCompy[0].flightEnergy, 0, 10.0f); // Asegura que la energía de vuelo no exceda el máximo
     }
+    public void CompyDestroyed(Compy compy)
+    {
+        if (nearbyCompy.Contains(compy))
+        {
+            nearbyCompy.Remove(compy);
+        }
+    }
 
     void Update()
     {

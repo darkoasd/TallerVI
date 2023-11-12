@@ -25,6 +25,7 @@ public class Raptor : DinosaurioCarnivoro
     }
     protected override void Update()
     {
+
         healthBar.value = CalculatedHealth();
         tameBar.value = CalculatedTame();
         if (!isTrapped) // Si el Raptor no está atrapado, entonces ejecuta el Update de la clase base.

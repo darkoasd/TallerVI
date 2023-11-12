@@ -1,0 +1,326 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &-8606601055676793388
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Fern_Lite_Impostor
+  m_Shader: {fileID: 4800000, guid: 3ca42b0f3bb581344b6181f60b2f0544, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Albedo:
+        m_Texture: {fileID: 2800000, guid: aaa64b42fe29d2245bea7a846e1a721c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emissive:
+        m_Texture: {fileID: 2800000, guid: c5331bacc9224e7408f5fab88f97edef, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 2800000, guid: 320469abdc3ac41439e0e275503f261a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normals:
+        m_Texture: {fileID: 2800000, guid: 38bb8b0655c1d1c438ba87b3b1cd71f1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AI_Clip: 0.5
+    - _AI_DepthSize: 2.8449376
+    - _AI_Frames: 16
+    - _AI_FramesX: 16
+    - _AI_FramesY: 16
+    - _AI_ImpostorSize: 2.8468628
+    - _AI_Parallax: 1
+    - _AI_ShadowBias: 0
+    - _AI_ShadowView: 1
+    - _AI_TextureBias: -1
+    - _CategoryEmissive: 1
+    - _CategoryGlobal: 1
+    - _CategoryMotion: 1
+    - _CategoryNoise: 1
+    - _CategoryOcclusion: 1
+    - _CategorySizeFade: 1
+    - _CategorySubsurface: 1
+    - _EmissiveIntensityMode: 0
+    - _EmissiveIntensityValue: 1
+    - _EmissiveMode: 0
+    - _EmissivePhaseValue: 1
+    - _GlobalOverlay: 0.4
+    - _HasEmissive: 1
+    - _HasGradient: 0
+    - _HasOcclusion: 1
+    - _ImostorCat: 1
+    - _ImpostorSmoothnessValue: 1
+    - _InteractionAmplitude: 1
+    - _IsCollected: 1
+    - _IsCustomShader: 0
+    - _IsIdentifier: 747
+    - _IsImpostorShader: 1
+    - _IsInitialized: 1
+    - _IsPlantShader: 1
+    - _IsShared: 0
+    - _IsSubsurfaceShader: 1
+    - _IsTVEShader: 1
+    - _IsVersion: 1201
+    - _MessageOcclusion: 0
+    - _MotionAmplitude_10: 0.5
+    - _MotionPosition_10: 0.5
+    - _MotionScale_10: 3
+    - _MotionSpeed_10: 6
+    - _OverlayProjectionValue: 0
+    - _OverlayVariationValue: 0.2
+    - _RenderCoverage: 0
+    - _RenderPriority: 0
+    - _RenderQueue: 0
+    - _RenderSpecular: 1
+    - _SpaceGlobalLayers: 0
+    - _SpaceGlobalLocals: 0
+    - _SpaceGlobalOptions: 0
+    - _SpaceMotionGlobals: 0
+    - _SpaceSubsurface: 0
+    - _SubsurfaceAmbientValue: 0.2
+    - _SubsurfaceAngleValue: 2
+    - _SubsurfaceDiffusion: 0
+    - _SubsurfaceDirectValue: 1
+    - _SubsurfaceMaskValue: 1
+    - _SubsurfaceNormalValue: 0
+    - _SubsurfaceScatteringValue: 2
+    - _SubsurfaceShadowValue: 1
+    - _SubsurfaceValue: 1
+    - _TransAmbient: 0.2
+    - _TransDirect: 1
+    - _TransNormal: 0
+    - _TransScattering: 2
+    - _TransShadow: 1
+    - _TransStrength: 2
+    - _VegetationMode: 1
+    - _VertexDynamicMode: 0
+    - _VertexPivotMode: 0
+    - _VertexVariationMode: 0
+    - _emissive_intensity_value: 1
+    - _render_specular: 1
+    m_Colors:
+    - _AI_Offset: {r: 0.26258916, g: 0.41062748, b: -0.042093933, a: 0.019607842}
+    - _AI_SizeOffset: {r: 2.8468628, g: 2.8449376, b: 0, a: -0.0012254901}
+    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ImpostorColor: {r: 1, g: 1, b: 1, a: 1}
+    - _NoiseMaskRemap: {r: 0, g: 0, b: 0, a: 0}
+    - _SubsurfaceColor: {r: 0.47615767, g: 0.5283019, b: 0.18191527, a: 1}
+    - _SubsurfaceDiffusion_Asset: {r: 2.2888926e+38, g: 1.2389358e-26, b: 7.69327e-37, a: 0.00018220427}
+    - _VertexOcclusionColor: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 0.5254902}
+  m_BuildTextureStacks: []
+--- !u!43 &-4856489100556497480
+Mesh:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Fern_Lite_Impostor
+  serializedVersion: 10
+  m_SubMeshes:
+  - serializedVersion: 2
+    firstByte: 0
+    indexCount: 18
+    topology: 0
+    baseVertex: 0
+    firstVertex: 0
+    vertexCount: 8
+    localAABB:
+      m_Center: {x: 0, y: -0.055820823, z: 0}
+      m_Extent: {x: 1.4234314, y: 1.4234314, z: 0}
+  m_Shapes:
+    vertices: []
+    shapes: []
+    channels: []
+    fullWeights: []
+  m_BindPose: []
+  m_BoneNameHashes: 
+  m_RootBoneNameHash: 0
+  m_BonesAABB: []
+  m_VariableBoneCountWeights:
+    m_Data: 
+  m_MeshCompression: 0
+  m_IsReadable: 1
+  m_KeepVertices: 1
+  m_KeepIndices: 1
+  m_IndexFormat: 0
+  m_IndexBuffer: 070005000300030001000700070006000500050004000300030002000100010000000700
+  m_VertexData:
+    serializedVersion: 3
+    m_VertexCount: 8
+    m_Channels:
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 12
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 24
+      format: 0
+      dimension: 2
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    m_DataSize: 256
+    _typelessdata: 0033b6bf3b8f53bf000000000000000000000000000080bf000000005cd36a3e4c31f1be2358bdbf000000000000000000000000000080bf1c47ab3e00000000d42bcb3e2358bdbf000000000000000000000000000080bff0ae233f000000000033b63f21495ebf000000000000000000000000000080bf0000803f38c15b3e0033b63fbe3f913e000000000000000000000000000080bf0000803fac871e3f1f914c3fdd0daf3f000000000000000000000000000080bf61db473f0000803f5b8d4dbfdd0daf3f000000000000000000000000000080bf14305f3e0000803f0033b6bfd5aa833e000000000000000000000000000080bf0000000004251c3f
+  m_CompressedMesh:
+    m_Vertices:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UV:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Normals:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Tangents:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Weights:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_NormalSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_TangentSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_FloatColors:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_BoneIndices:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Triangles:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UVInfo: 0
+  m_LocalAABB:
+    m_Center: {x: 0.26258916, y: 0.41062748, z: -0.042093933}
+    m_Extent: {x: 1.2054746, y: 0.50785154, z: 1.2181878}
+  m_MeshUsageFlags: 0
+  m_BakedConvexCollisionMesh: 
+  m_BakedTriangleCollisionMesh: 
+  m_MeshMetrics[0]: 1
+  m_MeshMetrics[1]: 1
+  m_MeshOptimizationFlags: 1
+  m_StreamData:
+    serializedVersion: 2
+    offset: 0
+    size: 0
+    path: 
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7ba7a43222473d4292f91ae936fe2cc, type: 3}
+  m_Name: Fern_Lite_Impostor
+  m_EditorClassIdentifier: 
+  Material: {fileID: -8606601055676793388}
+  Mesh: {fileID: -4856489100556497480}
+  Version: 9901
+  ImpostorType: 1
+  LockedSizes: 1
+  SelectedSize: 4096
+  TexSize: {x: 4096, y: 4096}
+  DecoupleAxisFrames: 0
+  HorizontalFrames: 16
+  VerticalFrames: 16
+  PixelPadding: 32
+  MaxVertices: 8
+  Tolerance: 0.15
+  NormalScale: 0.01
+  ShapePoints:
+  - {x: 0, y: 0.7706781}
+  - {x: 0.3345269, y: 1}
+  - {x: 0.6393881, y: 1}
+  - {x: 1, y: 0.78539574}
+  - {x: 1, y: 0.3807423}
+  - {x: 0.7806912, y: 0}
+  - {x: 0.21795684, y: 0}
+  - {x: 0, y: 0.3900602}
+  Preset: {fileID: 11400000, guid: 8b79f02c702c1524d9c079921327e0a2, type: 2}
+  OverrideOutput: []
