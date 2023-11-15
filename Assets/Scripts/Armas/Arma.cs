@@ -86,7 +86,7 @@ public class Arma : MonoBehaviour
     protected virtual void Update()
     {
       
-        Debug.Log("Update de Arma ejecutándose");
+        
         if (Input.GetKeyDown(KeyCode.R))
         {
            

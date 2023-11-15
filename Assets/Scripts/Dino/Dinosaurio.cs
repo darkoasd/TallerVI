@@ -16,7 +16,10 @@ public class Dinosaurio : MonoBehaviour
     protected NavMeshAgent agent;
     public int domesticationLevel = 0;
     public int domesticationThreshold = 3; // Puedes ajustar este valor en cada tipo de dinosaurio
-
+    //Componentes
+    public GameObject itemDrop;
+    public Transform spawnItem;
+    private bool detachObjecjt;
     //UI
     public GameObject healthBarUi;
     public GameObject tameBarUi;
@@ -37,6 +40,11 @@ public class Dinosaurio : MonoBehaviour
 
     protected virtual void Update()
     {
+        if(detachObjecjt == true)
+        {
+            Instantiate(itemDrop, spawnItem);
+            spawnItem.parent = null;
+        }
         // Imprimir el contenido del diccionario
         foreach (var entry in EspeciesDomesticadas)
         {
@@ -139,13 +147,13 @@ public class Dinosaurio : MonoBehaviour
         Debug.Log(gameObject.name + " ha muerto. Atacante: " + atacante.name);
         // Si este dinosaurio estaba domesticado, removerlo del diccionario
         EspeciesDomesticadas.Remove(GetType().Name);
+        
 
         // Verifica si el atacante es el jugador antes de disparar el evento
         if (atacante != null && atacante.CompareTag("Player"))
         {
             onDeath.Invoke(pointsValue); // Pasa el valor de los puntos al evento
-        }
-
+        }            
         // Destruir el objeto del dinosaurio
         Destroy(gameObject);
     }

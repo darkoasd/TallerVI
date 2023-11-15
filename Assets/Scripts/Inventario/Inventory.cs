@@ -74,7 +74,7 @@ public class Inventory : MonoBehaviour
     void Update()
     {
 
-        Debug.Log("Update de Inventario ejecutándose");
+        
         if (equippedWeapon != null && equippedWeapon.itemType == Item.ItemType.Weapon)
         {
 

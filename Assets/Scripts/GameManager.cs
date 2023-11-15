@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour
     }
     void HandleInventoryInput()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             isInventoryOpen = !isInventoryOpen; // Cambia el estado de isInventoryOpen
             inventario.SetActive(isInventoryOpen); // Activa o desactiva el UI de inventario según el estado.
