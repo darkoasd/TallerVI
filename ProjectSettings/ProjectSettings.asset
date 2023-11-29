@@ -978,11 +978,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 
+  cloudProjectId: 26f20fee-a27f-4ea4-9d34-e920e51f2c93
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: TallerVI
+  organizationId: goicovicd
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage:
@@ -990,4 +990,4 @@ PlayerSettings:
   platformRequiresReadableAssets: 0
   virtualTexturingSupportEnabled: 0
   insecureHttpOption: 0
-  genesisOrgId: 
+  genesisOrgId: '4673185691733'
