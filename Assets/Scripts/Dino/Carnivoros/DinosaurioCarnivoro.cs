@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class DinosaurioCarnivoro : Dinosaurio
 {
     public List<Transform> targets;
-    private NavMeshAgent navMeshAgent;
+    [SerializeField] private NavMeshAgent navMeshAgent;
     private Vector3 destination;
     public float detectionRange = 10f;
     public float detectionRangeAttack = 2f;
@@ -49,12 +49,20 @@ public class DinosaurioCarnivoro : Dinosaurio
         if (navMeshAgent.remainingDistance > stoppingDistance && !isCurrentlyAttacking)
         {
             // Si el dinosaurio está en movimiento y no está atacando, activa la animación de caminar
-            animator.SetBool("isWalking", true);
+            if (this.gameObject.CompareTag("Raptor"))
+            {
+                animator.SetBool("isWalking", true);
+            }
+
+            
         }
         else
         {
-            // Si no, desactiva la animación de caminar
-            animator.SetBool("isWalking", false);
+            if (this.gameObject.CompareTag("Raptor"))
+            {
+                animator.SetBool("isWalking", false);
+            }
+           
         }
         if (playerObject != null)
         {

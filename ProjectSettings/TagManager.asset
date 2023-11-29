@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - Compy
   - Raptor
+  - Ceratosaurus
   layers:
   - Default
   - TransparentFX
