@@ -20,7 +20,8 @@ public class PlayerMotor : MonoBehaviour
     public float mouseSensitivity = 2.0f;
 
     private CharacterController characterController;
-    private Camera playerCamera;
+
+
 
     private float pitch = 0.0f;
     public float maxPitch = 80.0f;
@@ -64,10 +65,21 @@ public class PlayerMotor : MonoBehaviour
     public TextMeshProUGUI itemPickupText; // Referencia al UI Text
     public bool canPickUpItem = false; // Para saber si el jugador puede recoger el ítem
     private Item nearbyItem; // Referencia al ítem cercano
-   
 
+    public WeaponController weaponController;
+    public footStep footstep;
+
+
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private Camera raptorCamera; // Cámara del Raptor
+    public float verticalSpeedCamera = 1.0f;
+    public float horizontalSpeedCamera = 1.0f;
+    //Monturas
+    private Raptor raptorCercano;
     void Start()
     {
+        weaponController = GetComponent<WeaponController>();
+        footstep = GetComponent<footStep>();
         originalJumpForce = jumpForce;
         audioSource = gameObject.AddComponent<AudioSource>();
 
@@ -77,7 +89,7 @@ public class PlayerMotor : MonoBehaviour
         previousHealth = currentHealth;
 
         characterController = GetComponent<CharacterController>();
-        playerCamera = Camera.main;
+
         Cursor.lockState = CursorLockMode.Locked; // Esconde y bloquea el cursor al centro de la pantalla
 
 
@@ -113,13 +125,13 @@ public class PlayerMotor : MonoBehaviour
     {
         if ((int)currentEnergy != previousEnergy)
         {
-            
+
             energyBar.SetHealth((int)currentEnergy);
             previousEnergy = (int)currentEnergy;
         }
         else
         {
-            
+
         }
     }
     private void HandleRunning()
@@ -194,6 +206,15 @@ public class PlayerMotor : MonoBehaviour
 
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.E) && nearbyRaptor.Count > 0)
+        {
+            Raptor nearestRaptor = nearbyRaptor[0];
+            if (nearestRaptor.isDomesticated)
+            {
+                MountRaptor(nearestRaptor);
+            }
+        }
         if (nearbyCompy.Count > 0 && nearbyCompy[0].transform.parent == playerNeckTransform && Input.GetKey(KeyCode.Space))
         {
             Fly();
@@ -239,16 +260,16 @@ public class PlayerMotor : MonoBehaviour
             Vector3 moveDirection = transform.right * x + transform.forward * z;
             characterController.Move(moveDirection * speed * Time.deltaTime);
 
-            // Rotación del jugador y la cámara
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
-
             transform.Rotate(Vector3.up * mouseX * mouseSensitivity); // Rotación horizontal
-
             pitch -= mouseY * mouseSensitivity;
             pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
-            playerCamera.transform.localEulerAngles = new Vector3(pitch, 0, 0); // Rotación vertical
-                                                                                // Actualizar la velocidad vertical basado en la gravedad
+            mainCamera.transform.localEulerAngles = new Vector3(pitch, 0, 0);
+
+
+
+
             verticalSpeed += gravity * Time.deltaTime;
 
             // Mover el personaje verticalmente basado en la velocidad vertical
@@ -265,11 +286,12 @@ public class PlayerMotor : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
-      
+        Debug.Log("OnCollisionEnter: El jugador ha comenzado a colisionar con " + collision.gameObject.name);
+
         // Puedes agregar más condiciones aquí si hay plataformas específicas o áreas donde no quieres que se detecte la colisión
         if (collision.gameObject.CompareTag("Ground"))
         {
-            
+
             isJumping = false;
         }
     }
@@ -282,6 +304,10 @@ public class PlayerMotor : MonoBehaviour
             nearbyItem = item;
             itemPickupText.gameObject.SetActive(true); // Mostrar el mensaje
         }
+        if (other.gameObject.CompareTag("Raptor"))
+        { // Asegúrate de que el raptor tenga la etiqueta "Raptor"
+            raptorCercano = other.gameObject.GetComponent<Raptor>();
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -293,6 +319,10 @@ public class PlayerMotor : MonoBehaviour
             nearbyItem = null;
             itemPickupText.gameObject.SetActive(false); // Ocultar el mensaje
         }
+        if (other.gameObject.CompareTag("Raptor"))
+        {
+            raptorCercano = null;
+        }
     }
     private void Muerte()
     {
@@ -303,7 +333,81 @@ public class PlayerMotor : MonoBehaviour
         currentHealth += curarse;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
     }
+    private void SwitchToRaptorCamera()
+    {
+        mainCamera.gameObject.SetActive(false);
+        raptorCamera.gameObject.SetActive(true);
+    }
+
+    public void SwitchToMainCamera()
+    {
+        mainCamera.gameObject.SetActive(true);
+        raptorCamera.gameObject.SetActive(false);
+    }
+    void MountRaptor(Raptor raptor)
+    {
+
+        if (raptor.isDomesticated)
+        {
+            raptor.RideRaptor(this.gameObject);
+            this.enabled = false; // Desactiva el control del jugador
+            SwitchToRaptorCamera();
+            var characterController = GetComponent<CharacterController>();
+            if (characterController != null)
+            {
+                characterController.enabled = false;
+            }
+            var collider = GetComponent<Collider>();
+            if (collider != null)
+            {
+                collider.enabled = false;
+            }
+            var rigidbody = GetComponent<Rigidbody>();
+            if (rigidbody != null)
+            {
+                rigidbody.isKinematic = true;
+            }
+            if (weaponController != null) weaponController.enabled = false;
+            if (footstep != null) footstep.enabled = false;
 
 
+
+            transform.SetParent(raptor.mountPoint, false);
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+
+
+        }
+    }
+    public void DismountRaptor()
+    {
+        this.enabled = true; // Reactiva el control del jugador
+        SwitchToMainCamera();
+        var characterController = GetComponent<CharacterController>();
+        if (characterController != null)
+        {
+            characterController.enabled = true;
+        }
+
+        var collider = GetComponent<Collider>();
+        if (collider != null)
+        {
+            collider.enabled = true;
+        }
+
+        var rigidbody = GetComponent<Rigidbody>();
+        if (rigidbody != null)
+        {
+            rigidbody.isKinematic = false;
+        }
+        if (weaponController != null) weaponController.enabled = true;
+        if (footstep != null) footstep.enabled = true;
+
+        transform.SetParent(null); // Remueve el parentesco con el Raptor
+        // Ajusta la posición y rotación del jugador si es necesario
+
+        // Cambiar la cámara de Cinemachine si es necesario
+        // ...
+    }
 
 }

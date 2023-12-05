@@ -18,6 +18,7 @@ public class DinosaurioCarnivoro : Dinosaurio
     //bool
     private bool isWandering = true;
      bool isAttacking = false;
+    protected bool isRunningAway = false;
     private bool hasChosenPath = false;
     private bool isCurrentlyAttacking = false; // Variable para rastrear si está atacando actualmente
     //Attack
@@ -43,7 +44,11 @@ public class DinosaurioCarnivoro : Dinosaurio
 
         Compy[] compysInScene = FindObjectsOfType<Compy>();
         Transform nearestCompyTarget = GetNearestTarget(compysInScene);
-
+        if (isRunningAway)
+        {
+            // Si el Raptor está huyendo, no debe atacar
+            return;
+        }
         // Encuentra el jugador en la escena (ajusta la etiqueta según tu configuración)
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (navMeshAgent.remainingDistance > stoppingDistance && !isCurrentlyAttacking)
