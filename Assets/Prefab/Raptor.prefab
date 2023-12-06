@@ -2351,8 +2351,12 @@ MonoBehaviour:
   isFollowingPlayer: 0
   turnSpeed: 100
   moveSpeed: 5
+  cantidadCura: 7
   isDomesticated: 0
   mountPoint: {fileID: 1674289334957395376}
+  cinturonSlots: {fileID: 3226288819816490902, guid: c0d1d4d87f37ab04dabf17acfebe4b5d,
+    type: 3}
+  playerBars: {fileID: 0}
 --- !u!195 &7011026923599059040
 NavMeshAgent:
   m_ObjectHideFlags: 0

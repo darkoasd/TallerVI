@@ -10,6 +10,8 @@ TagManager:
   - Raptor
   - Ceratosaurus
   - AtaqueTameado
+  - PlayerUI
+  - PlayerGameUI
   layers:
   - Default
   - TransparentFX

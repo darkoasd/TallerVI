@@ -23,11 +23,19 @@ public class Raptor : DinosaurioCarnivoro
   
     public Transform mountPoint;
 
+
+
+    //UI
+    private GameObject cinturonSlots;
+    private GameObject playerBars;
+
     protected override void Start()
     {
         base.Start();
 
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform; // Asume que el jugador tiene la etiqueta "Player"
+        cinturonSlots = GameObject.FindGameObjectWithTag("PlayerUI");
+        playerBars = GameObject.FindGameObjectWithTag("PlayerGameUI");
         raptorRigidbody = GetComponent<Rigidbody>();
     }
     protected override void Update()
@@ -38,6 +46,8 @@ public class Raptor : DinosaurioCarnivoro
         if (isBeingRidden && Input.GetKeyDown(KeyCode.E))
         {
             DismountRaptor();
+            playerBars.SetActive(true);
+            cinturonSlots.SetActive(true);
         }
         if (vida <= healthThresholdToRun && !IsDomesticated())
         {
@@ -50,6 +60,8 @@ public class Raptor : DinosaurioCarnivoro
 
         if (isBeingRidden)
         {
+            playerBars.SetActive(false);
+            cinturonSlots.SetActive(false);
             HandleMountedMovement();
             HandleMountedAttack();
 
