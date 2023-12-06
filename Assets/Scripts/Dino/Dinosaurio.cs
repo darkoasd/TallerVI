@@ -20,6 +20,7 @@ public class Dinosaurio : MonoBehaviour
     public GameObject itemDrop;
     public Transform spawnItem;
     private bool detachObjecjt;
+    
     //UI
     public GameObject healthBarUi;
     public GameObject tameBarUi;

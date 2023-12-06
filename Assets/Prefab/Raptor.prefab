@@ -482,9 +482,9 @@ GameObject:
   m_Component:
   - component: {fileID: 515097377580283237}
   - component: {fileID: 6762852326745443131}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: AttackCollision
-  m_TagString: Untagged
+  m_TagString: AtaqueTameado
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -498,8 +498,8 @@ Transform:
   m_GameObject: {fileID: 4148485263003291531}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.167, z: 3.72}
-  m_LocalScale: {x: 1, y: 0.71492, z: 1}
+  m_LocalPosition: {x: 0, y: -0.421, z: 2.828}
+  m_LocalScale: {x: 0.56639344, y: 0.40492594, z: 0.56639344}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3220434834118691967}
@@ -1909,6 +1909,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f799180ae78af0844ac8ad63a434d66d,
         type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f799180ae78af0844ac8ad63a434d66d,
+        type: 3}
       propertyPath: m_TagString
       value: Raptor
       objectReference: {fileID: 0}
@@ -2338,6 +2343,8 @@ MonoBehaviour:
   showDetectionRange: 1
   waitTime: 8
   attackCollider: {fileID: 6762852326745443131}
+  isBeingRidden: 0
+  animator: {fileID: 5050378259030985224}
   followDistance: 5
   healthThresholdToRun: 5
   domesticationIncreasePerFeed: 2
@@ -2345,7 +2352,6 @@ MonoBehaviour:
   turnSpeed: 100
   moveSpeed: 5
   isDomesticated: 0
-  isBeingRidden: 0
   mountPoint: {fileID: 1674289334957395376}
 --- !u!195 &7011026923599059040
 NavMeshAgent:

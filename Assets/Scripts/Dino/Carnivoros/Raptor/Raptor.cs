@@ -16,10 +16,11 @@ public class Raptor : DinosaurioCarnivoro
     //Movimiento
     public float turnSpeed = 100f; //velocidad de Giro
     public float moveSpeed = 5f;
-    //Domesticacion
-   
+    public float cantidadCura = 7;
+    //Domesticacion 
+
     public bool isDomesticated = false;
-    public bool isBeingRidden = false;
+  
     public Transform mountPoint;
 
     protected override void Start()
@@ -49,17 +50,91 @@ public class Raptor : DinosaurioCarnivoro
 
         if (isBeingRidden)
         {
-            float moveInput = Input.GetAxis("Vertical");
-            float turnInput = Input.GetAxis("Mouse X");
+            HandleMountedMovement();
+            HandleMountedAttack();
 
-            // Calcula la nueva posición y rotación
-            Vector3 newPosition = raptorRigidbody.position + transform.forward * moveSpeed * moveInput * Time.deltaTime;
-            Quaternion newRotation = raptorRigidbody.rotation * Quaternion.Euler(0, turnInput * turnSpeed * Time.deltaTime, 0);
-
-            // Aplica la nueva posición y rotación
-            raptorRigidbody.MovePosition(newPosition);
-            raptorRigidbody.MoveRotation(newRotation);
+            // Verifica si el Raptor se está moviendo y actualiza el Animator
+            bool isMoving = Mathf.Abs(Input.GetAxis("Vertical")) > 0.1f || Mathf.Abs(Input.GetAxis("Mouse X")) > 0.1f;
+            animator.SetBool("isWalkingWild", isMoving);
+            animator.SetBool("isIdle", !isMoving);
+            // Si el Raptor no se está moviendo, activa el estado Idle
+            // Si el Raptor no se está moviendo, activa el estado Idle
+            if (!isMoving)
+            {
+                animator.SetBool("isIdle", true);
+            }
+            else
+            {
+                animator.SetBool("isIdle", false);
+            }
         }
+
+     
+    }
+    private void CausarDañoAlObjetivo(DinosaurioHerbivoro target = null)
+    {
+        foreach (Transform enemyTarget in targets)
+        {
+            if (enemyTarget != null)
+            {
+                // Intenta dañar a un DinosaurioHerbivoro
+                DinosaurioHerbivoro vidaObjetivoHerbivoro = enemyTarget.GetComponent<DinosaurioHerbivoro>();
+                if (vidaObjetivoHerbivoro != null)
+                {
+                    vidaObjetivoHerbivoro.RecibirDaño(daño, gameObject);
+                    continue; // Pasa al siguiente objetivo en la lista
+                }
+
+                Raptor vidaObjetivoRaptor = enemyTarget.GetComponent<Raptor>();
+                if (vidaObjetivoRaptor != null)
+                {
+                    vidaObjetivoRaptor.TakeDamage(daño);
+                    continue;
+                }
+            }
+        }
+    }
+    private void HandleMountedMovement()
+    {
+        float moveInput = Input.GetAxis("Vertical");
+        float turnInput = Input.GetAxis("Mouse X");
+
+        // Calcula la nueva posición y rotación
+        Vector3 newPosition = raptorRigidbody.position + transform.forward * moveSpeed * moveInput * Time.deltaTime;
+        Quaternion newRotation = raptorRigidbody.rotation * Quaternion.Euler(0, turnInput * turnSpeed * Time.deltaTime, 0);
+
+        // Aplica la nueva posición y rotación
+        raptorRigidbody.MovePosition(newPosition);
+        raptorRigidbody.MoveRotation(newRotation);
+    }
+
+    private void HandleMountedAttack()
+    {
+        if (Input.GetMouseButtonDown(0)) // Reemplaza con la tecla deseada
+        {
+            StartCoroutine(MountedAttack());
+        }
+    }
+    private IEnumerator MountedAttack()
+    {
+        animator.SetBool("isWalkingWild", false);
+        animator.SetBool("isIdle", false);
+        // Activar el collider de ataque y la animación
+        attackCollider.enabled = true;
+        animator.SetBool("isAttackingWild", true);
+      
+      
+
+        yield return new WaitForSeconds(0.5f); // Duración del ataque
+        CausarDañoAlObjetivo();
+        yield return new WaitForSeconds(0.5f);
+
+
+        // Desactivar el collider de ataque y la animación
+        attackCollider.enabled = false;
+        animator.SetBool("isAttackingWild", false); // Desactiva la animación de ataque
+        
+
     }
 
     public override void Feed(Item item)
@@ -74,6 +149,7 @@ public class Raptor : DinosaurioCarnivoro
             if (item.itemType == Item.ItemType.ConsumableTameoRaptor)
             {
                 domesticationLevel += domesticationIncreasePerFeed;
+               
                 Debug.Log("Raptor alimentado con carne. Nivel de domesticación aumentado.");
             }
             else
@@ -146,10 +222,7 @@ public class Raptor : DinosaurioCarnivoro
         player.transform.localRotation = Quaternion.identity;
 
         Rigidbody raptorRigidbody = GetComponent<Rigidbody>();
-        if (raptorRigidbody != null)
-        {
-            raptorRigidbody.isKinematic = true;
-        }
+       
         if (isDomesticated)
         {
             isBeingRidden = true;
@@ -196,10 +269,7 @@ public class Raptor : DinosaurioCarnivoro
                 }
 
                 var rigidbody = player.GetComponent<Rigidbody>();
-                if (rigidbody != null)
-                {
-                    rigidbody.isKinematic = false; // Reactivar la física del jugador
-                }
+              
                 playerMotor.weaponController.enabled = true;
                 playerMotor. footstep.enabled = true;
 
@@ -232,5 +302,19 @@ public class Raptor : DinosaurioCarnivoro
             }
         }
 
+    }
+    public void TakeDamage(float damage)
+    {
+        vida -= damage;
+        vida = Mathf.Clamp(vida, 0, vidaMaxima);
+       
+    }
+   
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("AtaqueTameado"))
+        {
+            TakeDamage(daño);
+        }
     }
 }

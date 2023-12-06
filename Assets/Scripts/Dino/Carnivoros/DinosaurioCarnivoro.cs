@@ -25,8 +25,8 @@ public class DinosaurioCarnivoro : Dinosaurio
     private float attackCooldown = 2f; // Tiempo de espera entre ataques
     private float timeSinceLastAttack = 0f;
     public Collider attackCollider;
-
-    private Animator animator;
+    public bool isBeingRidden = false;
+    public Animator animator;
     protected override void Start()
     {
         base.Start(); 
@@ -41,40 +41,56 @@ public class DinosaurioCarnivoro : Dinosaurio
         base.Update();
         targets.RemoveAll(target => target == null);
         timeSinceLastAttack += Time.deltaTime;
-
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         Compy[] compysInScene = FindObjectsOfType<Compy>();
         Transform nearestCompyTarget = GetNearestTarget(compysInScene);
-        if (isRunningAway)
+        bool isMoving = navMeshAgent.velocity.magnitude > 0.1f;
+        animator.SetBool("isWalking", isMoving && !isCurrentlyAttacking);
+        if (nearestCompyTarget != null && !isBeingRidden)
         {
-            // Si el Raptor está huyendo, no debe atacar
-            return;
-        }
-        // Encuentra el jugador en la escena (ajusta la etiqueta según tu configuración)
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        if (navMeshAgent.remainingDistance > stoppingDistance && !isCurrentlyAttacking)
-        {
-            // Si el dinosaurio está en movimiento y no está atacando, activa la animación de caminar
-            if (this.gameObject.CompareTag("Raptor"))
+            float distanceToCompy = Vector3.Distance(transform.position, nearestCompyTarget.position);
+            if (distanceToCompy < detectionRange && !isCurrentlyAttacking)
             {
-                animator.SetBool("isWalking", true);
-            }
+                Vector3 directionToCompy = nearestCompyTarget.position - transform.position;
+                directionToCompy.Normalize();
+                Vector3 targetPosition = nearestCompyTarget.position - directionToCompy * stoppingDistance;
+                navMeshAgent.SetDestination(targetPosition);
 
-            
+                if (!isAttacking && distanceToCompy < detectionRangeAttack)
+                {
+                    Debug.Log("Adding Compy to targets and starting attack.");
+                    targets.Add(nearestCompyTarget);
+                    if (!isCurrentlyAttacking)
+                    {
+                        StartCoroutine(Attack());
+                    }
+                }
+            }
+        }
+        if (isBeingRidden)
+        {
+            return; // Detiene la ejecución del resto del código si el Raptor está siendo montado
+        }
+        if (isCurrentlyAttacking)
+        {
+            // Si está atacando, asegúrate de que la animación de caminar esté desactivada
+            animator.SetBool("isWalking", false);
+        }
+        else if (!isMoving)
+        {
+            // Si no se está moviendo y no está atacando, debería estar en Idle
+            animator.SetBool("isIdle", true);
         }
         else
         {
-            if (this.gameObject.CompareTag("Raptor"))
-            {
-                animator.SetBool("isWalking", false);
-            }
-           
+            animator.SetBool("isIdle", false);
         }
-        if (playerObject != null)
+        if (playerObject != null && !isBeingRidden)
         {
             Transform playerTransform = playerObject.transform;
             float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
             // Lógica para perseguir al jugador
-            if (distanceToPlayer < detectionRange)
+            if (distanceToPlayer < detectionRange && !isCurrentlyAttacking)
             {
                 Vector3 directionToPlayer = playerTransform.position - transform.position;
                 directionToPlayer.Normalize();
@@ -85,55 +101,19 @@ public class DinosaurioCarnivoro : Dinosaurio
                 {
                     Debug.Log("Adding player to targets and starting attack.");
                     targets.Add(playerTransform);
-                    StartCoroutine(Attack());
+                    if (!isCurrentlyAttacking)
+                    {
+                        StartCoroutine(Attack());
+                    }
                 }
                 else
                 {
+                   
                     Debug.Log("Not attacking player. Distance: " + distanceToPlayer + ", Attack Range: " + detectionRangeAttack);
                     SetRandomDestination();
                 }
             }
-            if (nearestCompyTarget != null)
-            {
-                float distanceToCompy = Vector3.Distance(transform.position, nearestCompyTarget.position);
-
-                if (distanceToCompy < detectionRange)
-                {
-                    Vector3 directionToCompy = nearestCompyTarget.position - transform.position;
-                    directionToCompy.Normalize();
-                    Vector3 targetPosition = nearestCompyTarget.position - directionToCompy * stoppingDistance;
-                    navMeshAgent.SetDestination(targetPosition);
-
-                    if (!isAttacking && distanceToCompy < detectionRangeAttack)
-                    {
-                        targets.Add(nearestCompyTarget);
-                        StartCoroutine(Attack());
-                    }
-                    else
-                    {
-                        SetRandomDestination();
-                    }
-
-                }
-                // Si un compy está más cerca y dentro del rango de detección, persigue al compy.
-                else if (distanceToCompy < detectionRange)
-                {
-                    Vector3 directionToCompy = nearestCompyTarget.position - transform.position;
-                    directionToCompy.Normalize();
-                    Vector3 targetPosition = nearestCompyTarget.position - directionToCompy * stoppingDistance;
-                    navMeshAgent.SetDestination(targetPosition);
-
-                    if (!isAttacking && distanceToCompy < detectionRangeAttack)
-                    {
-                        targets.Add(nearestCompyTarget);
-                        StartCoroutine(Attack());
-                    }
-                    else
-                    {
-                        SetRandomDestination();
-                    }
-                }
-            }
+          
             else
             {
                // Verifica si el objetivo más cercano es un compy y si está en la lista, y, si lo está, quítalo.
@@ -180,6 +160,7 @@ public class DinosaurioCarnivoro : Dinosaurio
         attackCollider.enabled = false;
         Debug.Log("Collider de ataque desactivado.");
         animator.SetBool("isAttacking", false);
+
         yield return new WaitForSeconds(attackCooldown);
 
         navMeshAgent.isStopped = false;
@@ -208,6 +189,7 @@ public class DinosaurioCarnivoro : Dinosaurio
                     vidaObjetivoJugador.TakeDamage(daño);
                     continue; // Pasa al siguiente objetivo en la lista
                 }
+               
             }
         }
     }

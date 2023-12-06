@@ -9,6 +9,7 @@ TagManager:
   - Compy
   - Raptor
   - Ceratosaurus
+  - AtaqueTameado
   layers:
   - Default
   - TransparentFX
