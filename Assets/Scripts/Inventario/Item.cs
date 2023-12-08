@@ -16,7 +16,8 @@ public class Item : MonoBehaviour
         Miscellaneous,
         AmmoEscopeta,
         AmmoPistola,
-        AmmoRifle
+        AmmoRifle,
+        HealthItem
 
 
 
@@ -31,9 +32,10 @@ public class Item : MonoBehaviour
     public int maxStackAmount; // Si es apilable, ¿cuántos ítems como máximo por espacio en el inventario?
     public int municion; // Añade este campo
     public Arma armaAsociada; // Añadir este campo
+    public float healthValue;
 
     // Variables para la rotación
-    
+
     // Constructor para facilitar la creación de ítems
     public Item(string _itemName, int _itemID, Sprite _itemIcon, ItemType _itemType, string _description, bool _isStackable = false, int _maxStackAmount = 1)
     {

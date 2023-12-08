@@ -148,12 +148,33 @@ public class Raptor : DinosaurioCarnivoro
         
 
     }
-
+    private void IncreaseHealth(float amount)
+    {
+        vida += amount;
+        vida = Mathf.Clamp(vida, 0, vidaMaxima);
+        // Actualiza la barra de salud si es necesario
+        healthBar.value = CalculatedHealth();
+    }
+    private void HandleHealthItem(Item item)
+    {
+        if (item.itemType == Item.ItemType.HealthItem)
+        {
+            IncreaseHealth(item.healthValue); // Suponiendo que healthValue es una propiedad de Item
+            Destroy(item.gameObject); // Opcional: destruir el objeto después de usarlo
+        }
+    }
+    public void Curar(float cantidad)
+    {
+        vida += cantidad;
+        vida = Mathf.Clamp(vida, 0, vidaMaxima);
+        Debug.Log("Raptor curado. Salud actual: " + vida);
+    }
     public override void Feed(Item item)
     {
         if (domesticationLevel >= domesticationThreshold)
         {
             isDomesticated = true;
+            gameObject.tag = "RaptorDomesticado"; // Cambiar el tag
             Debug.Log("Raptor domesticado.");
         }
         if (CalculatedHealth() <= healthThresholdToRun)
@@ -327,6 +348,12 @@ public class Raptor : DinosaurioCarnivoro
         if (other.CompareTag("AtaqueTameado"))
         {
             TakeDamage(daño);
+        }
+
+        Item item = other.GetComponent<Item>();
+        if (item != null && isDomesticated)
+        {
+            HandleHealthItem(item);
         }
     }
 }

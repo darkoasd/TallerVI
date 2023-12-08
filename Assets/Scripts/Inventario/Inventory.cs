@@ -174,6 +174,19 @@ public class Inventory : MonoBehaviour
                     print("Nocuro");
                 }
                 break;
+            case Item.ItemType.HealthItem:
+                if (player.nearbyRaptor.Count > 0 && toolbarItemQuantities[index] > 0)
+                {
+                    Raptor raptor = player.nearbyRaptor[0];
+                    if (raptor.isDomesticated && raptor.vida < raptor.vidaMaxima)
+                    {
+                        raptor.Curar(itemToUse.healthValue); // Método para curar al Raptor
+                        ReduceItemQuantity(index);
+                    }
+                }
+
+                break;
+
             case Item.ItemType.AmmoEscopeta:
                 
                 AddAmmo(TipoBala.Escopeta, itemToUse.municion );

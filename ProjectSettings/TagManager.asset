@@ -12,6 +12,7 @@ TagManager:
   - AtaqueTameado
   - PlayerUI
   - PlayerGameUI
+  - RaptorDomesticado
   layers:
   - Default
   - TransparentFX
