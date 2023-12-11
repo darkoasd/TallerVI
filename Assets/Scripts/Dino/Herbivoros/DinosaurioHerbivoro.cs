@@ -66,6 +66,11 @@ public class DinosaurioHerbivoro : Dinosaurio
             isFollowingPlayer = true;
         }
     }
-   
+    public void TakeDamage(float damage)
+    {
+        vida -= damage;
+        vida = Mathf.Clamp(vida, 0, vidaMaxima);
+
+    }
 }
 

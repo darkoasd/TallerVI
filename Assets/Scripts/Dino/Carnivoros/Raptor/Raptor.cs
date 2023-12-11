@@ -18,7 +18,7 @@ public class Raptor : DinosaurioCarnivoro
     public float moveSpeed = 5f;
     public float cantidadCura = 7;
     //Domesticacion 
-
+    public Collider attackColliderDomesticado;
     public bool isDomesticated = false;
   
     public Transform mountPoint;
@@ -132,7 +132,7 @@ public class Raptor : DinosaurioCarnivoro
         animator.SetBool("isWalkingWild", false);
         animator.SetBool("isIdle", false);
         // Activar el collider de ataque y la animación
-        attackCollider.enabled = true;
+        attackColliderDomesticado.enabled = true;
         animator.SetBool("isAttackingWild", true);
       
       
@@ -143,7 +143,7 @@ public class Raptor : DinosaurioCarnivoro
 
 
         // Desactivar el collider de ataque y la animación
-        attackCollider.enabled = false;
+        attackColliderDomesticado.enabled = false;
         animator.SetBool("isAttackingWild", false); // Desactiva la animación de ataque
         
 
@@ -173,7 +173,7 @@ public class Raptor : DinosaurioCarnivoro
     {
         if (domesticationLevel >= domesticationThreshold)
         {
-            isDomesticated = true;
+            IsDomesticated();
             gameObject.tag = "RaptorDomesticado"; // Cambiar el tag
             Debug.Log("Raptor domesticado.");
         }
@@ -241,8 +241,8 @@ public class Raptor : DinosaurioCarnivoro
 
     private bool IsDomesticated()
     {
-        isDomesticated = true;
-        return domesticationLevel >= domesticationThreshold;
+        isDomesticated = domesticationLevel >= domesticationThreshold;
+        return isDomesticated;
     }
     public void RideRaptor(GameObject playerObject)
     {

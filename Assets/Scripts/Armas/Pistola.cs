@@ -77,9 +77,11 @@ public class Pistola : Arma
             // Si golpea un "Compy", inflige daño
             if (hit.transform.CompareTag("Compy"))
             {
-                Dinosaurio dinosaurio = hit.transform.GetComponent<Dinosaurio>();
+                print("DisparoCompy");
+                DinosaurioHerbivoro dinosaurio = hit.transform.GetComponent<DinosaurioHerbivoro>();
                 if (dinosaurio != null)
                 {
+
                     dinosaurio.RecibirDaño(daño,gameObject);
                 }
             }

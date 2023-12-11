@@ -102,9 +102,11 @@ public class PlayerMotor : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
+        Debug.Log("TakeDamage llamado. Daño recibido: " + damage + ", Salud actual antes del daño: " + currentHealth);
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         healthBar.SetHealth(currentHealth);
+        Debug.Log("Salud después de recibir daño: " + currentHealth);
     }
     private void CheckHealthChange()
     {
@@ -161,7 +163,7 @@ public class PlayerMotor : MonoBehaviour
         {
             if (currentEnergy >= 5)
             {
-                verticalSpeed = Mathf.Sqrt(jumpForce * -2f * gravity);
+                verticalSpeed = Mathf.Sqrt(jumpForce * -1.5f * gravity);
                 currentEnergy -= 5.0f; // Reducimos 5 unidades de energía
                 isJumping = true;
                 // Reproduce el sonido de salto
@@ -270,7 +272,22 @@ public class PlayerMotor : MonoBehaviour
 
 
 
-            verticalSpeed += gravity * Time.deltaTime;
+            if (!characterController.isGrounded)
+            {
+                // Aplica una gravedad más fuerte si el jugador está cayendo
+                if (verticalSpeed < 0)
+                {
+                    verticalSpeed += gravity * 2.0f * Time.deltaTime; // Aumenta la gravedad durante la caída
+                }
+                else
+                {
+                    verticalSpeed += gravity * Time.deltaTime; // Gravedad normal durante el ascenso
+                }
+            }
+            else if (isJumping)
+            {
+                isJumping = false; // El jugador ha aterrizado
+            }
 
             // Mover el personaje verticalmente basado en la velocidad vertical
             Vector3 verticalMove = new Vector3(0, verticalSpeed, 0) * Time.deltaTime;

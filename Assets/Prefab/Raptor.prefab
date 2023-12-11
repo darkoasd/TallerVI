@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 6762852326745443131}
   m_Layer: 12
   m_Name: AttackCollision
-  m_TagString: AtaqueTameado
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -498,7 +498,7 @@ Transform:
   m_GameObject: {fileID: 4148485263003291531}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.421, z: 2.828}
+  m_LocalPosition: {x: 0, y: -0.421, z: 3.085}
   m_LocalScale: {x: 0.56639344, y: 0.40492594, z: 0.56639344}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1110,6 +1110,61 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.3, y: 0.54, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &8520099054758386758
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 990309085613545975}
+  - component: {fileID: 5526288204717905387}
+  m_Layer: 12
+  m_Name: AttackCollisionDomesticado
+  m_TagString: AtaqueTameado
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &990309085613545975
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8520099054758386758}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.421, z: 2.828}
+  m_LocalScale: {x: 0.56639344, y: 0.40492594, z: 0.56639344}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3220434834118691967}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5526288204717905387
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8520099054758386758}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 8192
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 1
+  m_Height: 1
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8636766563744445885
 GameObject:
@@ -2256,6 +2311,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f799180ae78af0844ac8ad63a434d66d,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 990309085613545975}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f799180ae78af0844ac8ad63a434d66d,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 7916971754374011406}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f799180ae78af0844ac8ad63a434d66d,
         type: 3}
@@ -2315,12 +2374,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vida: 20
   vidaMaxima: 20
-  "da\xF1o": 3
+  "da\xF1o": 2
   velocidad: 4
   pointsValue: 6
   domesticationLevel: 0
   domesticationThreshold: 6
-  itemDrop: {fileID: 3463717755897213349, guid: 5b6279b187890bf40b284aea483a022c,
+  itemDrop: {fileID: 4173767715564872528, guid: 5b6279b187890bf40b284aea483a022c,
     type: 3}
   spawnItem: {fileID: 8558755461099659698}
   healthBarUi: {fileID: 3962332658321010129}
@@ -2337,11 +2396,12 @@ MonoBehaviour:
   targets: []
   navMeshAgent: {fileID: 7011026923599059040}
   detectionRange: 15
-  detectionRangeAttack: 4
+  detectionRangeAttack: 2.8
   wanderRadius: 25
   stoppingDistance: 2
   showDetectionRange: 1
   waitTime: 8
+  isCurrentlyAttacking: 0
   attackCollider: {fileID: 6762852326745443131}
   isBeingRidden: 0
   animator: {fileID: 5050378259030985224}
@@ -2352,11 +2412,9 @@ MonoBehaviour:
   turnSpeed: 100
   moveSpeed: 5
   cantidadCura: 7
+  attackColliderDomesticado: {fileID: 5526288204717905387}
   isDomesticated: 0
   mountPoint: {fileID: 1674289334957395376}
-  cinturonSlots: {fileID: 3226288819816490902, guid: c0d1d4d87f37ab04dabf17acfebe4b5d,
-    type: 3}
-  playerBars: {fileID: 0}
 --- !u!195 &7011026923599059040
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -158,4 +158,5 @@ public class Compy :DinosaurioHerbivoro
         agent.enabled = true; // Reactiva el NavMeshAgent para que el Compy pueda moverse de nuevo
         isFollowingPlayer = true; // Si quieres que el Compy siga al jugador después de ser soltado
     }
+   
 }

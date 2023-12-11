@@ -20,7 +20,7 @@ public class DinosaurioCarnivoro : Dinosaurio
      bool isAttacking = false;
     protected bool isRunningAway = false;
     private bool hasChosenPath = false;
-    private bool isCurrentlyAttacking = false; // Variable para rastrear si está atacando actualmente
+    public bool isCurrentlyAttacking = false; // Variable para rastrear si está atacando actualmente
     //Attack
     private float attackCooldown = 2f; // Tiempo de espera entre ataques
     private float timeSinceLastAttack = 0f;
@@ -73,8 +73,10 @@ public class DinosaurioCarnivoro : Dinosaurio
     }
     private void HandleTargetingAndAttack(GameObject playerObject, Transform nearestCompyTarget)
     {
+        Debug.Log("HandleTargetingAndAttack llamado");
         if (isBeingRidden || isCurrentlyAttacking)
         {
+            Debug.Log("Retorno anticipado: isBeingRidden = " + isBeingRidden + ", isCurrentlyAttacking = " + isCurrentlyAttacking);
             return; // Detiene la ejecución si el dinosaurio está siendo montado o atacando
         }
 
@@ -83,19 +85,31 @@ public class DinosaurioCarnivoro : Dinosaurio
         {
             Transform playerTransform = playerObject.transform;
             float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+            Debug.Log("Distancia al jugador: " + distanceToPlayer);
             Raptor raptorComponent = GetComponent<Raptor>();
             if (raptorComponent == null || !raptorComponent.isDomesticated)
             {
+                Debug.Log("Raptor es null o no está domesticado");
                 if (distanceToPlayer < detectionRange && distanceToPlayer > detectionRangeAttack)
                 {
+                    Debug.Log("Perseguir al jugador");
                     PursueTarget(playerTransform, distanceToPlayer);
                 }
                 else if (distanceToPlayer <= detectionRangeAttack && !isAttacking)
                 {
+                    Debug.Log("Iniciar ataque al jugador");
                     targets.Add(playerTransform);
                     StartCoroutine(Attack());
                 }
             }
+            else
+            {
+                Debug.Log("Raptor está domesticado, no perseguirá ni atacará al jugador");
+            }
+        }
+        else
+        {
+            Debug.Log("playerObject es null");
         }
 
 
@@ -135,9 +149,7 @@ public class DinosaurioCarnivoro : Dinosaurio
         }
         else if (!isAttacking)
         {
-            // Iniciar ataque
-            targets.Add(target);
-            StartCoroutine(Attack());
+            
         }
     }
     private IEnumerator Attack()
@@ -151,8 +163,9 @@ public class DinosaurioCarnivoro : Dinosaurio
         isCurrentlyAttacking = true;
         isAttacking = true;
         navMeshAgent.isStopped = true;
-        attackCollider.enabled = true;
         CausarDañoAlObjetivo();
+        attackCollider.enabled = true;
+       
         Debug.Log("Ataque activado y collider de ataque habilitado.");
         animator.SetBool("isAttacking", true);
         animator.SetBool("isWalking", false);
@@ -183,7 +196,7 @@ public class DinosaurioCarnivoro : Dinosaurio
                 DinosaurioHerbivoro vidaObjetivoHerbivoro = enemyTarget.GetComponent<DinosaurioHerbivoro>();
                 if (vidaObjetivoHerbivoro != null)
                 {
-                    vidaObjetivoHerbivoro.RecibirDaño(daño,gameObject);
+                    vidaObjetivoHerbivoro.RecibirDaño(daño, gameObject);
                     continue; // Pasa al siguiente objetivo en la lista
                 }
 
@@ -204,6 +217,9 @@ public class DinosaurioCarnivoro : Dinosaurio
             }
         }
     }
+   
+  
+    
     private Transform GetNearestTarget(Compy[] compys)
     {
         Transform nearestTarget = null;

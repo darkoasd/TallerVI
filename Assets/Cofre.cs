@@ -9,6 +9,12 @@ public class Cofre : MonoBehaviour
     private bool cofreAbierto;
     public GameManager gamemanager;
     public int puntosDar;
+    private Animator anim;
+
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -18,6 +24,7 @@ public class Cofre : MonoBehaviour
             gamemanager.AddPoints(puntosDar);
             Instantiate(itemRecompensa,itemSpawn);
             cofreAbierto = true;
+            anim.SetBool("AbrirCofre", true);
         }
     }
 }

@@ -142,20 +142,24 @@ public class Dinosaurio : MonoBehaviour
         }
     }
 
-    // Método para manejar la muerte del dinosaurio
-    protected virtual void Morir(GameObject atacante)
-    {
-        Debug.Log(gameObject.name + " ha muerto. Atacante: " + atacante.name);
-        // Si este dinosaurio estaba domesticado, removerlo del diccionario
-        EspeciesDomesticadas.Remove(GetType().Name);
-        
+        // Método para manejar la muerte del dinosaurio
+        protected virtual void Morir(GameObject atacante)
+        {
+            Debug.Log(gameObject.name + " ha muerto. Atacante: " + atacante.name);
+            // Si este dinosaurio estaba domesticado, removerlo del diccionario
+            EspeciesDomesticadas.Remove(GetType().Name);
+        if (spawnItem != null && itemDrop != null)
+        {
+            Instantiate(itemDrop, spawnItem.position, spawnItem.rotation);
+        }
+
 
         // Verifica si el atacante es el jugador antes de disparar el evento
         if (atacante != null && atacante.CompareTag("Player"))
-        {
-            onDeath.Invoke(pointsValue); // Pasa el valor de los puntos al evento
-        }            
-        // Destruir el objeto del dinosaurio
-        Destroy(gameObject);
-    }
+            {
+                onDeath.Invoke(pointsValue); // Pasa el valor de los puntos al evento
+            }            
+            // Destruir el objeto del dinosaurio
+            Destroy(gameObject);
+        }
 }
