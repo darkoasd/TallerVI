@@ -660,7 +660,7 @@ public class Inventory : MonoBehaviour
     }
 
 
-    public void RemoveItem(Item item)
+    public bool RemoveItem(Item item)
     {
         int itemIndex = items.IndexOf(item);
         if (itemIndex != -1)
@@ -680,7 +680,11 @@ public class Inventory : MonoBehaviour
             {
                 itemCountText.text = "";
             }
+
+            return true; // El ítem fue removido exitosamente
         }
+
+        return false; // No se encontró el ítem, por lo tanto,
     }
     public void MoveItemToToolbar(int inventoryIndex, int toolbarIndex)
     {
@@ -702,6 +706,10 @@ public class Inventory : MonoBehaviour
             UpdateItemUI(inventoryIndex);
             UpdateToolbarItemUI(toolbarIndex);
         }
+    }
+    public bool HasItem(Item item)
+    {
+        return items.Contains(item);
     }
 
     public void MoveItemToInventory(int toolbarIndex, int inventoryIndex)

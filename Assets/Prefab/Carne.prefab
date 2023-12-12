@@ -130,3 +130,6 @@ MonoBehaviour:
   municion: 0
   armaAsociada: {fileID: 0}
   healthValue: 0
+  precio: 0
+  itemPrefab: {fileID: 4173767715564872528}
+  limiteDeCompra: 5

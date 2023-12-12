@@ -966,6 +966,10 @@ MonoBehaviour:
   maxStackAmount: 1
   municion: 0
   armaAsociada: {fileID: 752330497065569870}
+  healthValue: 0
+  precio: 0
+  itemPrefab: {fileID: 6629782678414762986}
+  limiteDeCompra: 1
 --- !u!65 &3293102789327953447
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -33,6 +33,9 @@ public class Item : MonoBehaviour
     public int municion; // Añade este campo
     public Arma armaAsociada; // Añadir este campo
     public float healthValue;
+    public int precio;
+    public GameObject itemPrefab;
+    public int limiteDeCompra;
 
     // Variables para la rotación
 

@@ -11,7 +11,10 @@ public class Shop : MonoBehaviour
     public GameObject panelCompras;
     private bool entroRango = false;
     public GameManager gameManager;
-
+    public Inventory playerInventory;
+    public Dictionary<int, Item> catalogoDeItems = new Dictionary<int, Item>();
+    private Dictionary<int, int> cantidadCompradaPorItem = new Dictionary<int, int>();
+    public List<Item> itemsEnVenta;
 
     //shop 
     public GameObject escopetaComprar;
@@ -26,8 +29,11 @@ public class Shop : MonoBehaviour
         {
             gameManager = FindObjectOfType<GameManager>();
         }
-       
+        playerInventory = FindObjectOfType<Inventory>(); // Asegúrate de que el jugador tenga un componente Inventory
+      
     }
+
+
     private void Update()
     {
         if (entroRango == true && Input.GetKeyDown(KeyCode.E))
@@ -35,28 +41,42 @@ public class Shop : MonoBehaviour
             TiendaPrincipal();
         }
     }
-    public void ComprarItem()
+    public void ComprarItem(Item itemAComprar)
     {
-        // Verifica si el jugador tiene suficientes puntos
-        if (gameManager.points >= precioDeEscopeta)
+        if (!cantidadCompradaPorItem.ContainsKey(itemAComprar.itemID))
         {
-            // Resta los puntos
-            gameManager.AddPoints(-precioDeEscopeta);
+            cantidadCompradaPorItem[itemAComprar.itemID] = 0;
+        }
 
-            // Instancia el objeto en el punto de spawn
-            Instantiate(escopetaComprar, spawnPoint.position, spawnPoint.rotation);
-            // Desactiva el botón de compra
-            if (botonDeCompra != null)
-            {
-                botonDeCompra.interactable = false;
-            }
-            // Aquí puedes agregar cualquier otra lógica que necesites después de la compra
-            // Por ejemplo, actualizar la interfaz de usuario, reproducir un sonido, etc.
+        if (gameManager.points >= itemAComprar.precio && cantidadCompradaPorItem[itemAComprar.itemID] < itemAComprar.limiteDeCompra)
+        {
+            gameManager.AddPoints(-itemAComprar.precio);
+            playerInventory.AddItem(itemAComprar);
+            cantidadCompradaPorItem[itemAComprar.itemID]++;
+
+            // Otras acciones necesarias
+        }
+        else if (cantidadCompradaPorItem[itemAComprar.itemID] >= itemAComprar.limiteDeCompra)
+        {
+            Debug.Log("Has alcanzado el límite de compra para este ítem.");
         }
         else
         {
             Debug.Log("No tienes suficientes puntos para comprar este objeto.");
-            // Aquí puedes manejar lo que sucede si el jugador no tiene suficientes puntos
+        }
+
+    }
+    public void IntercambiarItems(Item itemOfrecido, Item itemDeseado)
+    {
+        if (playerInventory.HasItem(itemOfrecido) && playerInventory.RemoveItem(itemOfrecido))
+        {
+            playerInventory.AddItem(itemDeseado);
+            // Realiza las actualizaciones necesarias en la UI y otras acciones
+        }
+        else
+        {
+            Debug.Log("No tienes el ítem necesario para el intercambio.");
+            // Manejo de la situación cuando el jugador no tiene el ítem requerido
         }
     }
     private void OnTriggerEnter(Collider other)
