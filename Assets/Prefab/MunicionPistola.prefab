@@ -122,8 +122,12 @@ MonoBehaviour:
   itemID: 6
   itemIcon: {fileID: 21300000, guid: 8a6e8cdb6cd3dda4cb1765c16a339073, type: 3}
   itemType: 5
-  description: 
+  description: Municion para USP45
   isStackable: 1
   maxStackAmount: 1
   municion: 30
   armaAsociada: {fileID: 0}
+  healthValue: 0
+  precio: 0
+  itemPrefab: {fileID: 0}
+  limiteDeCompra: 0

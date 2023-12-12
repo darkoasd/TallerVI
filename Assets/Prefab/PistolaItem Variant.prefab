@@ -103,11 +103,15 @@ MonoBehaviour:
   itemID: 2
   itemIcon: {fileID: 21300000, guid: ca3bbe5febde8fd49bca8cffc6ea857f, type: 3}
   itemType: 0
-  description: 
+  description: Pistola USP45, Ideal para corto y  medio alcance
   isStackable: 1
   maxStackAmount: 1
   municion: 0
   armaAsociada: {fileID: 7555886833154115045}
+  healthValue: 0
+  precio: 0
+  itemPrefab: {fileID: 0}
+  limiteDeCompra: 0
 --- !u!65 &2323664068957438852
 BoxCollider:
   m_ObjectHideFlags: 0

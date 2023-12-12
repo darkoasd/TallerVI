@@ -124,7 +124,7 @@ MonoBehaviour:
   itemID: 11
   itemIcon: {fileID: 21300000, guid: 97a1bb8b00546e540afc8f46aa67aee6, type: 3}
   itemType: 3
-  description: Carne Cruda
+  description: La comida favorita de los carnivoros
   isStackable: 1
   maxStackAmount: 10
   municion: 0

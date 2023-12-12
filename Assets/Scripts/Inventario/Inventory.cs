@@ -35,7 +35,8 @@ public class Inventory : MonoBehaviour
     public AudioClip pickupSound; // El sonido de recogida de item
     private AudioSource audioSource; // El componente que reproducirá el sonido
 
-
+    public TextMeshProUGUI itemDescriptionText;
+    public Image itemIconImage;
     public WeaponController weaponController;
 
     void Start()
@@ -583,9 +584,24 @@ public class Inventory : MonoBehaviour
             audioSource.PlayOneShot(pickupSound);
         }
     }
-
+    public void UpdateItemDescription(Item selectedItem)
+    {
+        if (selectedItem != null)
+        {
+            itemDescriptionText.text = selectedItem.description; // Actualizar descripción
+            itemIconImage.sprite = selectedItem.itemIcon; // Actualizar icono del ítem
+            itemIconImage.enabled = true; // Asegúrate de habilitar la imagen si está deshabilitada
+        }
+        else
+        {
+            itemDescriptionText.text = ""; // Limpiar descripción
+            itemIconImage.sprite = null; // Limpiar icono del ítem
+            itemIconImage.enabled = false; // Opcionalmente, puedes deshabilitar la imagen si no hay ítem
+        }
+    }
     public void UpdateItemUI(int index)
     {
+       
         Debug.Log("Actualizando UI del ítem en el índice: " + index);
         GameObject slotObj = inventorySlots[index];
         if (slotObj == null)

@@ -27,7 +27,10 @@ public class ItemSlot : MonoBehaviour
         // Oculta el tooltip
         tooltipText.transform.parent.gameObject.SetActive(false);
     }
-
+    public void OnSlotSelected()
+    {
+        Inventory.instance.UpdateItemDescription(item); // Notifica al inventario que este slot ha sido seleccionado
+    }
 
 
 
