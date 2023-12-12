@@ -130,3 +130,4 @@ MonoBehaviour:
   healthValue: 0
   precio: 0
   itemPrefab: {fileID: 5654269651393040409}
+  limiteDeCompra: 35

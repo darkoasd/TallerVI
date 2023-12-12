@@ -93,10 +93,13 @@ MonoBehaviour:
   itemType: 9
   description: 
   isStackable: 1
-  maxStackAmount: 10
+  maxStackAmount: 30
   municion: 0
   armaAsociada: {fileID: 0}
   healthValue: 5
+  precio: 0
+  itemPrefab: {fileID: 3738516876571367814}
+  limiteDeCompra: 50
 --- !u!136 &8296042418017072144
 CapsuleCollider:
   m_ObjectHideFlags: 0

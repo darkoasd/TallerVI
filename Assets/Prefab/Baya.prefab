@@ -124,7 +124,7 @@ MonoBehaviour:
   itemType: 2
   description: 'Sirve para domesticar '
   isStackable: 1
-  maxStackAmount: 10
+  maxStackAmount: 30
   municion: 0
   armaAsociada: {fileID: 0}
   healthValue: 0

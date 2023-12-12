@@ -484,24 +484,74 @@ public class Inventory : MonoBehaviour
         }
         instance = this;
     }
+    private bool TryStackItemInInventory(List<Item> itemList, List<int> itemQuantityList, List<GameObject> slotList, Item itemToAdd)
+    {
 
+        for (int i = 0; i < itemList.Count; i++)
+        {
+            if (itemList[i] != null && itemList[i].itemName == itemToAdd.itemName && itemQuantityList[i] < itemList[i].maxStackAmount)
+            {
+                itemQuantityList[i]++;
+                slotList[i].GetComponent<ItemSlot>().quantity = itemQuantityList[i];
+                UpdateItemUI(i); // Asumiendo que UpdateItemUI maneja ambos inventarios
+                UpdateToolbarItemUI(i);
+                return true; // Ítem stackeado exitosamente
+            }
+        }
+        return false; // No se encontró un slot para stackear
+    }
+
+    private bool AddItemToEmptySlot(List<Item> itemList, List<int> itemQuantityList, List<GameObject> slotList, Item itemToAdd)
+    {
+        for (int i = 0; i < itemList.Count; i++)
+        {
+            if (itemList[i] == null)
+            {
+                itemList[i] = itemToAdd;
+                itemQuantityList[i] = 1;
+                slotList[i].GetComponent<ItemSlot>().item = itemToAdd;
+                slotList[i].GetComponent<ItemSlot>().quantity = 1;
+                UpdateItemUI(i); // Asumiendo que UpdateItemUI maneja ambos inventarios
+                UpdateToolbarItemUI(i);
+                return true; // Ítem agregado exitosamente
+            }
+        }
+        return false; // No se encontró un slot vacío
+    }
     public void AddItem(Item item)
     {
-        // Marcamos el ítem como recogido.
-        // ...
+        if (TryStackItemInInventory(items, itemQuantities, inventorySlots, item))
+        {
+            return;
+        }
+
+        // Intenta stackear el ítem en el cinturón de herramientas
+        if (TryStackItemInInventory(toolbarItems, toolbarItemQuantities, toolbarSlots, item))
+        {
+            return;
+        }
+
+        // Si el ítem no se stackeó, busca un slot vacío en el inventario principal para agregarlo
+        if (AddItemToEmptySlot(items, itemQuantities, inventorySlots, item))
+        {
+            return;
+        }
+
+        // Si aún no se ha agregado, busca un slot vacío en el cinturón de herramientas
+        AddItemToEmptySlot(toolbarItems, toolbarItemQuantities, toolbarSlots, item);
 
         bool itemAdded = false;
         if (item.isStackable)
         {
             for (int i = 0; i < items.Count; i++)
             {
-                if (items[i] != null && items[i].itemName == item.itemName)
+                if (items[i] != null && items[i].itemName == item.itemName && itemQuantities[i] < items[i].maxStackAmount)
                 {
+                    // Aumenta la cantidad y actualiza la UI
                     itemQuantities[i]++;
                     inventorySlots[i].GetComponent<ItemSlot>().quantity = itemQuantities[i];
                     UpdateItemUI(i);
-                    itemAdded = true;
-                    break;
+                    return; // Finaliza el método aquí si el ítem se stackeó exitosamente
                 }
             }
         }
@@ -517,13 +567,12 @@ public class Inventory : MonoBehaviour
                     {
                         item.armaAsociada.SlotIndex = i;
                     }
-                    GameObject slotObj = inventorySlots[i];
+                    items[i] = item;
+                    itemQuantities[i] = 1; // Establece la cantidad inicial del ítem
                     inventorySlots[i].GetComponent<ItemSlot>().item = item;
-                    itemQuantities[i] = 1;
                     inventorySlots[i].GetComponent<ItemSlot>().quantity = 1;
-
                     UpdateItemUI(i);
-                    break;
+                    break; // Finaliza el bucle una ve
                 }
             }
         }
@@ -660,7 +709,7 @@ public class Inventory : MonoBehaviour
     }
 
 
-    public bool RemoveItem(Item item)
+    public bool  RemoveItem(Item item)
     {
         int itemIndex = items.IndexOf(item);
         if (itemIndex != -1)

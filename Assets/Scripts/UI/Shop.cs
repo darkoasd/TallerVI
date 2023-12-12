@@ -21,7 +21,7 @@ public class Shop : MonoBehaviour
     public int precioDeEscopeta;
     public Transform spawnPoint; // El punto donde el objeto será instanciado
     public Button botonDeCompra; // Referencia al botón de compra
-
+    public GameObject playerbars;
     private void Start()
     {
         panelEntrarTienda.SetActive(false);
@@ -39,6 +39,7 @@ public class Shop : MonoBehaviour
         if (entroRango == true && Input.GetKeyDown(KeyCode.E))
         {
             TiendaPrincipal();
+            playerbars.SetActive(false);
         }
     }
     public void ComprarItem(Item itemAComprar)
@@ -106,6 +107,7 @@ public class Shop : MonoBehaviour
     {
         gameManager.SetGameMode(GameManager.GameMode.Gameplay);
         panelTiendaPrincipal.SetActive(false);
+        playerbars.SetActive(true);
     }
 
 
