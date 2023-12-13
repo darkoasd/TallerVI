@@ -74,6 +74,8 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField] private Camera raptorCamera; // Cámara del Raptor
     public float verticalSpeedCamera = 1.0f;
     public float horizontalSpeedCamera = 1.0f;
+
+    public float someThresholdDistance = 2.0f;
     //Monturas
     private Raptor raptorCercano;
     void Start()
@@ -296,9 +298,12 @@ public class PlayerMotor : MonoBehaviour
         }
         if (canPickUpItem && Input.GetKeyDown(KeyCode.E))
         {
-            Inventory.instance.AddItem(nearbyItem);
-            nearbyItem.gameObject.SetActive(false); // Desactivar el objeto Item en la escena en lugar de destruirlo
-            itemPickupText.gameObject.SetActive(false); // Ocultar el mensaje
+            if (nearbyItem != null && Vector3.Distance(transform.position, nearbyItem.transform.position) < someThresholdDistance)
+            {
+                Inventory.instance.AddItem(nearbyItem);
+                nearbyItem.gameObject.SetActive(false);
+                itemPickupText.gameObject.SetActive(false);
+            }
         }
     }
     void OnCollisionEnter(Collision collision)

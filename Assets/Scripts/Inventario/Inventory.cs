@@ -761,6 +761,7 @@ public class Inventory : MonoBehaviour
                     {
                         AddItem(itemDeseado);
                         Debug.Log($"Ítem {itemDeseado.itemName} agregado al inventario.");
+                       
                     }
                     return true;
                 }
