@@ -5,9 +5,17 @@ using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
+    [System.Serializable]
+    public class Intercambio
+    {
+        public Item itemOfrecido;
+        public int cantidadOfrecida;
+        public Item itemDeseado;
+    }
+    public List<Intercambio> intercambiosDisponibles;
     public GameObject panelEntrarTienda;
     public GameObject panelTiendaPrincipal;
-
+    public GameObject panelIntercambio;
     public GameObject panelCompras;
     private bool entroRango = false;
     public GameManager gameManager;
@@ -42,6 +50,20 @@ public class Shop : MonoBehaviour
             playerbars.SetActive(false);
         }
     }
+    public void RealizarIntercambio(int indiceIntercambio)
+    {
+        if (indiceIntercambio < 0 || indiceIntercambio >= intercambiosDisponibles.Count)
+        {
+            Debug.LogError("Índice de intercambio fuera de rango.");
+            return;
+        }
+
+        Intercambio intercambio = intercambiosDisponibles[indiceIntercambio];
+        if (!playerInventory.IntercambiarPorCantidad(intercambio.itemOfrecido, intercambio.cantidadOfrecida, intercambio.itemDeseado))
+        {
+            Debug.Log("Intercambio fallido. Verifica si tienes suficientes ítems para el intercambio.");
+        }
+    }
     public void ComprarItem(Item itemAComprar)
     {
         if (!cantidadCompradaPorItem.ContainsKey(itemAComprar.itemID))
@@ -67,17 +89,12 @@ public class Shop : MonoBehaviour
         }
 
     }
-    public void IntercambiarItems(Item itemOfrecido, Item itemDeseado)
+
+    public void IntercambiarPorCantidad(Item itemOfrecido, int cantidadOfrecida, Item itemDeseado)
     {
-        if (playerInventory.HasItem(itemOfrecido) && playerInventory.RemoveItem(itemOfrecido))
+        if (!playerInventory.IntercambiarPorCantidad(itemOfrecido, cantidadOfrecida, itemDeseado))
         {
-            playerInventory.AddItem(itemDeseado);
-            // Realiza las actualizaciones necesarias en la UI y otras acciones
-        }
-        else
-        {
-            Debug.Log("No tienes el ítem necesario para el intercambio.");
-            // Manejo de la situación cuando el jugador no tiene el ítem requerido
+            Debug.Log("Intercambio fallido. Verifica si tienes suficientes ítems para el intercambio.");
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -101,6 +118,10 @@ public class Shop : MonoBehaviour
     public void AbrirCompras()
     {
         panelCompras.SetActive(true);
+    }
+    public void AbrirIntercambios()
+    {
+        panelIntercambio.SetActive(true);
     }
 
     public void SalioTienda()

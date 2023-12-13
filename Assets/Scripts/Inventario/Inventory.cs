@@ -599,6 +599,17 @@ public class Inventory : MonoBehaviour
             itemIconImage.enabled = false; // Opcionalmente, puedes deshabilitar la imagen si no hay ítem
         }
     }
+    public int GetItemQuantity(Item itemBuscado)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i] != null && items[i].itemName == itemBuscado.itemName)
+            {
+                return itemQuantities[i];
+            }
+        }
+        return 0; // Retorna 0 si el ítem no se encuentra en el inventario
+    }
     public void UpdateItemUI(int index)
     {
        
@@ -723,33 +734,67 @@ public class Inventory : MonoBehaviour
         }
 
     }
-
-
-    public bool  RemoveItem(Item item)
+    public bool IntercambiarPorCantidad(Item itemOfrecido, int cantidadOfrecida, Item itemDeseado)
     {
-        int itemIndex = items.IndexOf(item);
-        if (itemIndex != -1)
+        Debug.Log($"Intentando intercambiar {cantidadOfrecida} de {itemOfrecido.itemName} por {itemDeseado.itemName}");
+
+        for (int i = 0; i < items.Count; i++)
         {
-            items[itemIndex] = null;
-            itemQuantities[itemIndex] = 0;
-
-            Image itemIcon = inventorySlots[itemIndex].transform.Find("ItemIcon").GetComponent<Image>();
-            if (itemIcon != null)
+            if (items[i] != null && items[i].itemName == itemOfrecido.itemName)
             {
-                itemIcon.sprite = null;
-                itemIcon.enabled = false;
-            }
+                Debug.Log($"Encontrado {itemOfrecido.itemName} en el inventario con cantidad {itemQuantities[i]}");
 
-            Text itemCountText = inventorySlots[itemIndex].GetComponentInChildren<Text>();
-            if (itemCountText != null)
-            {
-                itemCountText.text = "";
-            }
+                if (itemQuantities[i] >= cantidadOfrecida)
+                {
+                    Debug.Log($"Hay suficiente cantidad para el intercambio. Procediendo a intercambiar.");
 
-            return true; // El ítem fue removido exitosamente
+                    itemQuantities[i] -= cantidadOfrecida;
+                    Debug.Log($"Cantidad de {itemOfrecido.itemName} después del intercambio: {itemQuantities[i]}");
+
+                    if (itemQuantities[i] == 0)
+                    {
+                        items[i] = null;
+                        Debug.Log($"El ítem {itemOfrecido.itemName} ha sido eliminado del inventario.");
+                    }
+
+                    if (itemDeseado.itemName != itemOfrecido.itemName || !itemDeseado.isStackable)
+                    {
+                        AddItem(itemDeseado);
+                        Debug.Log($"Ítem {itemDeseado.itemName} agregado al inventario.");
+                    }
+                    return true;
+                }
+                else
+                {
+                    Debug.Log($"No hay suficiente cantidad de {itemOfrecido.itemName} para el intercambio.");
+                    return false;
+                }
+            }
         }
 
-        return false; // No se encontró el ítem, por lo tanto,
+        Debug.Log($"El ítem ofrecido {itemOfrecido.itemName} no se encuentra en el inventario.");
+        return false;
+    }
+
+    public bool RemoveItem(Item item, int cantidad)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i] != null && items[i].itemName == item.itemName)
+            {
+                if (itemQuantities[i] >= cantidad)
+                {
+                    itemQuantities[i] -= cantidad;
+                    if (itemQuantities[i] == 0)
+                    {
+                        items[i] = null; // Elimina el ítem si la cantidad llega a 0
+                    }
+                    return true; // Retorna true si el ítem fue eliminado exitosamente
+                }
+                break; // Sale del bucle si encuentra el ítem pero no tiene suficiente cantidad
+            }
+        }
+        return false; // Retorna false si no encuentra el ítem o no tiene suficiente cantidad
     }
     public void MoveItemToToolbar(int inventoryIndex, int toolbarIndex)
     {
