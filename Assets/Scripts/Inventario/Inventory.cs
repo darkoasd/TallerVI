@@ -31,7 +31,7 @@ public class Inventory : MonoBehaviour
     //Dinos
     public float feedDelay = 5f; // Tiempo de espera en segundos entre alimentaciones
     private float nextFeedTime = 0f; // Tiempo en el que se podrá alimentar nuevamente
-                                 
+
     public AudioClip pickupSound; // El sonido de recogida de item
     private AudioSource audioSource; // El componente que reproducirá el sonido
 
@@ -75,7 +75,7 @@ public class Inventory : MonoBehaviour
     void Update()
     {
 
-        
+
         if (equippedWeapon != null && equippedWeapon.itemType == Item.ItemType.Weapon)
         {
 
@@ -153,7 +153,7 @@ public class Inventory : MonoBehaviour
                     player.nearbyCompy[0].Feed(itemToUse);
                     ReduceItemQuantity(index);
                     nextFeedTime = Time.time + feedDelay;
-                }                
+                }
                 break;
             case Item.ItemType.ConsumableTameoRaptor:
                 if (player.nearbyRaptor.Count > 0 && toolbarItemQuantities[index] > 0) // Añadimos esta condición
@@ -164,7 +164,7 @@ public class Inventory : MonoBehaviour
                 }
                 break;
             case Item.ItemType.Consumable:
-                if(toolbarItemQuantities[index] > 0 && player.currentHealth < player.maxHealth)
+                if (toolbarItemQuantities[index] > 0 && player.currentHealth < player.maxHealth)
                 {
                     player.CurarPlayer();
 
@@ -189,11 +189,11 @@ public class Inventory : MonoBehaviour
                 break;
 
             case Item.ItemType.AmmoEscopeta:
-                
-                AddAmmo(TipoBala.Escopeta, itemToUse.municion );
-                
+
+                AddAmmo(TipoBala.Escopeta, itemToUse.municion);
+
                 ReduceItemQuantity(index);
-              
+
                 break;
             case Item.ItemType.AmmoPistola:
 
@@ -359,7 +359,7 @@ public class Inventory : MonoBehaviour
             GameObject slot = pointerData.pointerCurrentRaycast.gameObject;
 
             if (slot == null)
-            { 
+            {
                 StopDragging(slotBeingDraggedFrom);
                 return;
             }
@@ -612,7 +612,7 @@ public class Inventory : MonoBehaviour
     }
     public void UpdateItemUI(int index)
     {
-       
+
         Debug.Log("Actualizando UI del ítem en el índice: " + index);
         GameObject slotObj = inventorySlots[index];
         if (slotObj == null)
@@ -646,7 +646,7 @@ public class Inventory : MonoBehaviour
                 {
                     Debug.Log("Arma asociada encontrada. Municion: " + arma.municion + "/" + arma.municionMaxima);
                     // Actualiza el texto de munición usando el método en ItemSlot
-                    
+
                 }
                 else
                 {
@@ -668,7 +668,7 @@ public class Inventory : MonoBehaviour
                 itemCountText.text = "";
             }
 
-         
+
             Debug.Log("Slot vacío");
         }
     }
@@ -761,7 +761,7 @@ public class Inventory : MonoBehaviour
                     {
                         AddItem(itemDeseado);
                         Debug.Log($"Ítem {itemDeseado.itemName} agregado al inventario.");
-                       
+
                     }
                     return true;
                 }
@@ -871,6 +871,4 @@ public class Inventory : MonoBehaviour
         return null;
     }
 }
-
-
 

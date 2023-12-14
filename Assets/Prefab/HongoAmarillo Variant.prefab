@@ -87,7 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df61b2d31a5bc754184d3cbe43012c4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: HongoAmarillo
+  itemName: SetasAmarillas
   itemID: 16
   itemIcon: {fileID: 21300000, guid: b1ddd75aec62c1348b17ff740ed0c782, type: 3}
   itemType: 9
