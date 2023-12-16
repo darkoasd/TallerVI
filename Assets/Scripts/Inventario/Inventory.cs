@@ -38,6 +38,7 @@ public class Inventory : MonoBehaviour
     public TextMeshProUGUI itemDescriptionText;
     public Image itemIconImage;
     public WeaponController weaponController;
+    public ActivarPuerta doorController;
 
     void Start()
     {
@@ -521,6 +522,10 @@ public class Inventory : MonoBehaviour
     }
     public void AddItem(Item item)
     {
+        if (item.itemID == 20)
+        {
+            doorController.UnlockDoor();
+        }
         if (TryStackItemInInventory(items, itemQuantities, inventorySlots, item))
         {
             return;

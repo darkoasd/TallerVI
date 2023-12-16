@@ -29,6 +29,7 @@ public class Dinosaurio : MonoBehaviour
     //Sounds
     public AudioClip sonidoAlimentacion; // El sonido de alimentar al dinosaurio
     private AudioSource audioSource; // El componente que reproducirá el sonido
+    public ParticleSystem sistemaParticulasDaño;
 
 
     public UnityEvent<int> onDeath; // Asegúrate de que el evento pueda llevar un int como parámetro
@@ -134,8 +135,20 @@ public class Dinosaurio : MonoBehaviour
     // Método para recibir daño
     public virtual void RecibirDaño(float cantidad, GameObject atacante)
     {
+
         vida -= cantidad;
         Debug.Log(gameObject.name + " recibió daño. Vida restante: " + vida);
+
+        // Activa el sistema de partículas cuando el dinosaurio recibe daño
+        if (sistemaParticulasDaño != null)
+        {
+            sistemaParticulasDaño.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Referencia a sistema de partículas no establecida en Dinosaurio.");
+        }
+
         if (vida <= 0)
         {
             Morir(atacante);

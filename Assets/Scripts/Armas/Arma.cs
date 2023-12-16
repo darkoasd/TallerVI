@@ -7,6 +7,7 @@ public enum TipoBala
     Escopeta,
     Pistola,
     Rifle,
+    Cuchillo,
     // ... otros tipos de bala ...
 }
 public class Arma : MonoBehaviour

@@ -10,6 +10,7 @@ public class WeaponController : MonoBehaviour
     public GameObject shotgun;
     public GameObject pistol;
     public GameObject rifle;
+    public GameObject cuchillo;
 
     private GameObject currentWeapon;
 
@@ -50,6 +51,11 @@ public class WeaponController : MonoBehaviour
                 rifle.SetActive(true);
                 currentWeapon = rifle;
                 animator.SetBool("isRifleActive", true);
+                break;
+            case "Cuchillo":
+                cuchillo.SetActive(true);
+                currentWeapon = cuchillo;
+                animator.SetBool("isCuchilloActive", true);
                 break;
             default:
                 Debug.LogWarning("Arma no reconocida.");
@@ -93,6 +99,7 @@ public class WeaponController : MonoBehaviour
         animator.SetBool("isShotgunActive", false);
         animator.SetBool("isPistolActive", false);
         animator.SetBool("isRifleActive", false);
+        animator.SetBool("isCuchilloActive", false);
     }
 
     private void DeactivateAllWeapons()
@@ -100,6 +107,7 @@ public class WeaponController : MonoBehaviour
         shotgun.SetActive(false);
         pistol.SetActive(false);
         rifle.SetActive(false);
+        cuchillo.SetActive(false);
         currentWeapon = null;
         // Desuscribirse del evento para evitar referencias nulas
         if (currentWeapon != null)

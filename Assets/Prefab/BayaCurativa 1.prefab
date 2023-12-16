@@ -120,7 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: BayaCurativa
   itemID: 9
-  itemIcon: {fileID: 21300000, guid: 508ee364f87d9c04e85d33665c3d27a7, type: 3}
+  itemIcon: {fileID: 21300000, guid: 48e23cf1196ac0e488408a660da11a5a, type: 3}
   itemType: 1
   description: Cometela para curarte un poco
   isStackable: 1
